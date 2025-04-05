@@ -1,20 +1,37 @@
-import { LightningElement, track } from 'lwc';
-import findMatchingContact from '@salesforce/apex/RegistrationController.findMatchingContact';
-import submitRegistration from '@salesforce/apex/RegistrationController.submitRegistration';
+import { LightningElement, track } from "lwc";
+import findMatchingContact from "@salesforce/apex/RegistrationController.findMatchingContact";
+import submitRegistration from "@salesforce/apex/RegistrationController.submitRegistration";
 
 export default class RegistrationForm extends LightningElement {
-  @track firstName = '';
-  @track lastName = '';
-  @track email = '';
-  @track matchedAccount = '';
+  @track firstName = "";
+  @track lastName = "";
+  @track email = "";
+  @track matchedAccount = "";
   @track showNewAccountField = false;
-  @track newAccountName = '';
+  @track newAccountName = "";
 
   handleInput(event) {
     this[event.target.name] = event.target.value;
   }
 
+  validateInputs() {
+    const allInputs = this.template.querySelectorAll("lightning-input");
+    let allValid = true;
+    
+    allInputs.forEach((input) => {
+      if (!input.reportValidity()) {
+        allValid = false;
+      }
+    });
+
+    return allValid;
+  }
+
   async findContactMatch() {
+    if (!this.validateInputs()) {
+      return;
+    }
+
     try {
       const result = await findMatchingContact({
         firstName: this.firstName,
@@ -26,15 +43,19 @@ export default class RegistrationForm extends LightningElement {
         this.matchedAccount = result.AccountName;
         this.showNewAccountField = false;
       } else {
-        this.matchedAccount = '';
+        this.matchedAccount = "";
         this.showNewAccountField = true;
       }
     } catch (error) {
-      console.error('Contact match error:', error);
+      console.error("Contact match error:", error);
     }
   }
 
   async handleSubmit() {
+    if (!this.validateInputs()) {
+      return;
+    }
+
     try {
       const result = await submitRegistration({
         firstName: this.firstName,
@@ -43,9 +64,9 @@ export default class RegistrationForm extends LightningElement {
         accountName: this.matchedAccount || this.newAccountName
       });
 
-      console.log('Registration success:', result);
+      console.log("Registration success:", result);
     } catch (error) {
-      console.error('Submit error:', error);
+      console.error("Submit error:", error);
     }
   }
 }
