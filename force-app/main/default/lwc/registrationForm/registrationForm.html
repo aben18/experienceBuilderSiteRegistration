@@ -1,3 +1,19 @@
 <template>
-    
-</template>
+    <div class="slds-p-around_medium">
+      <lightning-input label="First Name" value={firstName} onchange={handleInput} name="firstName"></lightning-input>
+      <lightning-input label="Last" value={lastName} onchange={handleInput} name="lastName"></lightning-input>
+      <lightning-input label="Email" type="email" value={email} onchange={handleInput} name="email"></lightning-input>
+  
+      <lightning-button label="Find My Company" onclick={findContactMatch} class="slds-m-top_small"></lightning-button>
+  
+      <template if:true={matchedAccount}>
+        <p class="slds-m-top_medium"><strong>Matched Account:</strong> {matchedAccount}</p>
+      </template>
+  
+      <template if:true={showNewAccountField}>
+        <lightning-input label="New Account Name" value={newAccountName} onchange={handleInput} name="newAccountName"></lightning-input>
+      </template>
+  
+      <lightning-button variant="brand" label="Submit" class="slds-m-top_medium" onclick={handleSubmit}></lightning-button>
+    </div>
+  </template>
