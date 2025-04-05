@@ -37,7 +37,7 @@ public with sharing class RegistrationController {
         if (account == null) {
           account = new Account(Name = accountName);
           if (!Schema.sObjectType.Account.isCreateable()) {
-            throw new System.NoAccessException('You do not have permission to create an Account.');
+            throw new System.NoAccessException();
           }
           insert account;
         }
@@ -48,7 +48,7 @@ public with sharing class RegistrationController {
           AccountId = account.Id
         );
         if (!Schema.sObjectType.Contact.isCreateable()) {
-          throw new System.NoAccessException('You do not have permission to create a Contact.');
+          throw new System.NoAccessException();
         }
         insert contact;
       }
@@ -74,7 +74,7 @@ public with sharing class RegistrationController {
         );
         newUser.setOptions(dlo);
         if (!Schema.sObjectType.User.isCreateable()) {
-          throw new System.NoAccessException('You do not have permission to create a User.');
+          throw new System.NoAccessException();
         }
         insert newUser;
         return newUser.Id;
