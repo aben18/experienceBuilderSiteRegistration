@@ -23,32 +23,43 @@
       required
     ></lightning-input>
 
-    <lightning-button
-      label="Find My Company"
-      onclick={findContactMatch}
-      class="slds-m-around_medium slds-m-left_none"
-    ></lightning-button>
+    <div class="slds-grid slds-m-top_large slds-align-center">
+      <lightning-button
+        label="Check for an existing Company"
+        onclick={findContactMatch}
+        class="slds-m-right_medium"
+      ></lightning-button>
 
-    <template if:true={matchedAccount}>
-      <p class="slds-m-top_medium">
-        <strong>Matched Account:</strong> {matchedAccount}
-      </p>
-    </template>
+      <template if:true={matchedAccount}>
+        <p class="slds-align-middle">
+          <strong>Matched Account:</strong> {matchedAccount}
+        </p>
+      </template>
+      <template if:true={showNewAccountField}>
+        <p class="slds-align-middle">
+          <strong>We did not find an existing company for your email. Please enter a new company below.</strong>
+        </p>
+      </template>
+    </div>
 
     <template if:true={showNewAccountField}>
-      <lightning-input
-        label="New Account Name"
-        value={newAccountName}
-        onchange={handleInput}
-        name="newAccountName"
-      ></lightning-input>
+      <div class="slds-m-top_medium">
+        <lightning-input
+          label="New Company Name"
+          value={newAccountName}
+          onchange={handleInput}
+          name="newAccountName"
+          required
+        ></lightning-input>
+      </div>
     </template>
 
-    <lightning-button
-      variant="brand"
-      label="Sign Up"
-      class="slds-m-around_medium slds-m-left_none"
-      onclick={handleSubmit}
-    ></lightning-button>
+    <div class="slds-m-top_large">
+      <lightning-button
+        variant="brand"
+        label="Sign Up"
+        onclick={handleSubmit}
+      ></lightning-button>
+    </div>
   </div>
 </template>
