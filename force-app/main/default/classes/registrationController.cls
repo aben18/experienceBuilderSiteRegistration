@@ -6,6 +6,7 @@ public with sharing class RegistrationController {
         SELECT Id, Account.Name
         FROM Contact
         WHERE FirstName = :firstName AND LastName = :lastName AND Email = :email
+        WITH SECURITY_ENFORCED
         LIMIT 1
       ];
   
@@ -21,15 +22,23 @@ public with sharing class RegistrationController {
       Contact contact;
       User user;
   
-      List<Contact> contacts = [SELECT Id, AccountId FROM Contact WHERE FirstName = :firstName AND LastName = :lastName AND Email = :email LIMIT 1];
+      List<Contact> contacts = [
+        SELECT Id, AccountId
+        FROM Contact
+        WHERE FirstName = :firstName AND LastName = :lastName AND Email = :email
+        WITH SECURITY_ENFORCED
+        LIMIT 1];
       if (!contacts.isEmpty()) {
         contact = contacts[0];
       }
   
       if (contact == null) {
-        Account account = [SELECT Id FROM Account WHERE Name = :accountName LIMIT 1];
+        Account account = [SELECT Id FROM Account WHERE Name = :accountName WITH SECURITY_ENFORCED LIMIT 1];
         if (account == null) {
           account = new Account(Name = accountName);
+          if (!Schema.sObjectType.Account.isCreateable()) {
+            throw new System.NoAccessException('You do not have permission to create an Account.');
+          }
           insert account;
         }
         contact = new Contact(
@@ -38,10 +47,13 @@ public with sharing class RegistrationController {
           Email = email,
           AccountId = account.Id
         );
+        if (!Schema.sObjectType.Contact.isCreateable()) {
+          throw new System.NoAccessException('You do not have permission to create a Contact.');
+        }
         insert contact;
       }
   
-      List<User> existingUsers = [SELECT Id FROM User WHERE ContactId = :contact.Id LIMIT 1];
+      List<User> existingUsers = [SELECT Id FROM User WHERE ContactId = :contact.Id WITH SECURITY_ENFORCED LIMIT 1];
   
       if (existingUsers.isEmpty()) {
         Database.DMLOptions dlo = new Database.DMLOptions();
@@ -61,6 +73,9 @@ public with sharing class RegistrationController {
           ContactId = contact.Id
         );
         newUser.setOptions(dlo);
+        if (!Schema.sObjectType.User.isCreateable()) {
+          throw new System.NoAccessException('You do not have permission to create a User.');
+        }
         insert newUser;
         return newUser.Id;
       } else {
@@ -69,9 +84,9 @@ public with sharing class RegistrationController {
     }
   
     public class ContactMatchResult {
-      @AuraEnabled public String AccountName;
+      @AuraEnabled public String accountName;
       public ContactMatchResult(String name) {
-        this.AccountName = name;
+        this.accountName = name;
       }
     }
   }
