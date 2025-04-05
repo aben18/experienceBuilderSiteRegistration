@@ -14,10 +14,21 @@ export default class RegistrationForm extends LightningElement {
     this[event.target.name] = event.target.value;
   }
 
+  get isCompanyCheckDisabled() {
+    return !this.firstName || !this.lastName || !this.email;
+  }
+
+  get isSignUpDisabled() {
+    return (
+      this.isCompanyCheckDisabled ||
+      (!this.matchedAccount && !this.newAccountName)
+    );
+  }
+
   validateInputs() {
     const allInputs = this.template.querySelectorAll("lightning-input");
     let allValid = true;
-    
+
     allInputs.forEach((input) => {
       if (!input.reportValidity()) {
         allValid = false;

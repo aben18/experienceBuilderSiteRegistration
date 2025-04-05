@@ -1,6 +1,8 @@
 <template>
-  <div class="slds-grid slds-grid_align-center slds-grid_vertical-align-center slds-p-around_medium">
-    <div class="slds-card" style="width: 30rem;">
+  <div
+    class="slds-grid slds-grid_align-center slds-grid_vertical-align-center slds-p-around_medium"
+  >
+    <div class="slds-card" style="width: 30rem">
       <div class="slds-card__body slds-card__body_inner">
         <div class="slds-p-around_medium">
           <lightning-input
@@ -31,19 +33,21 @@
               label="Check for an existing Company"
               onclick={findContactMatch}
               class="slds-m-right_medium"
+              disabled={isCompanyCheckDisabled}
             ></lightning-button>
           </div>
 
           <template if:true={matchedAccount}>
-            <p>
-              <strong>Matched Account:</strong> {matchedAccount}
-            </p>
+            <p><strong>Matched Account:</strong> {matchedAccount}</p>
           </template>
 
           <template if:true={showNewAccountField}>
             <div class="slds-m-top_medium">
               <p>
-                <strong>We did not find an existing company for your email. Please enter a new company below.</strong>
+                <strong
+                  >We did not find an existing company for your email. Please
+                  enter a new company below.</strong
+                >
               </p>
             </div>
           </template>
@@ -65,6 +69,7 @@
               variant="brand"
               label="Sign Up"
               onclick={handleSubmit}
+              disabled={isSignUpDisabled}
             ></lightning-button>
           </div>
         </div>
