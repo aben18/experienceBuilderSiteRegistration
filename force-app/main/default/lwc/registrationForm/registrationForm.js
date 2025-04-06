@@ -26,7 +26,7 @@ export default class RegistrationForm extends LightningElement {
   }
 
   get isCompanyCheckDisabled() {
-    return !this.firstName || !this.lastName || !this.email;
+    return !this.email;
   }
 
   get showNewAccountField() {
