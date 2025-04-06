@@ -64,10 +64,33 @@
               <lightning-input
                 label="New Company Name"
                 value={newAccountName}
-                onchange={handleInput}
+                onchange={handleCompanySearch}
                 name="newAccountName"
+                type="search"
+                placeholder="Search for a company or enter a new one"
                 required
               ></lightning-input>
+              <template if:true={companySearchResults.length}>
+                <ul
+                  class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid"
+                >
+                  <template for:each={companySearchResults} for:item="company">
+                    <li
+                      key={company.Id}
+                      class="slds-listbox__item"
+                      onclick={handleCompanySelect}
+                      data-id={company.Id}
+                      data-name={company.Name}
+                    >
+                      <div
+                        class="slds-listbox__option slds-listbox__option_plain"
+                      >
+                        {company.Name}
+                      </div>
+                    </li>
+                  </template>
+                </ul>
+              </template>
             </div>
           </template>
 

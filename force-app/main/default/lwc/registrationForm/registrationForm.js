@@ -1,5 +1,6 @@
 import { LightningElement, track } from "lwc";
 import getAccountByContactEmail from "@salesforce/apex/RegistrationController.getAccountByContactEmail";
+import getAccountByName from "@salesforce/apex/RegistrationController.getAccountByName";
 import submitRegistration from "@salesforce/apex/RegistrationController.submitRegistration";
 
 export default class RegistrationForm extends LightningElement {
@@ -10,6 +11,7 @@ export default class RegistrationForm extends LightningElement {
   @track accountNotFound = false;
   @track newAccountName = "";
   @track enterNewAccount = false;
+  @track companySearchResults = [];
 
   handleInput(event) {
     this[event.target.name] = event.target.value;
@@ -75,6 +77,31 @@ export default class RegistrationForm extends LightningElement {
     } catch (error) {
       console.error("Contact match error:", error);
     }
+  }
+
+  async handleCompanySearch(event) {
+    const searchTerm = event.target.value;
+    this.newAccountName = searchTerm;
+
+    if (searchTerm.length < 2) {
+      this.companySearchResults = [];
+      return;
+    }
+
+    try {
+      const results = await getAccountByName({ name: searchTerm });
+      this.companySearchResults = results;
+    } catch (error) {
+      console.error("Error searching for companies:", error);
+      this.companySearchResults = [];
+    }
+  }
+
+  handleCompanySelect(event) {
+    const selectedCompanyName = event.currentTarget.dataset.name;
+
+    this.newAccountName = selectedCompanyName;
+    this.companySearchResults = []; // Clear the dropdown after selection
   }
 
   async handleSubmit() {
