@@ -34,35 +34,63 @@ public with sharing class RegistrationController {
     String email,
     String accountName
   ) {
-    Contact contact;
-    User user;
+    User existingUser = getUserByUsername(email);
+    Account account = upsertAccountByName(accountName);
+    Contact contact = upsertContactByEmail(firstName, lastName, email, account);
+    User newUser = createUser(firstName, lastName, email, contact);
+  }
 
-    List<Contact> contacts = [
-      SELECT Id, AccountId
-      FROM Contact
-      WHERE FirstName = :firstName AND LastName = :lastName AND Email = :email
+  public static user getUserByUsername(String username) {
+    List<User> users = [
+      SELECT Id, Username
+      FROM User
+      WHERE Username = :username
       WITH SECURITY_ENFORCED
       LIMIT 1
     ];
+    if (users.isEmpty()) {
+      return null;
+    }
+    return users[0];
+  }
+
+  public static Account upsertAccountByName(String accountName) {
+    List<Account> accounts = [
+      SELECT Id
+      FROM Account
+      WHERE Name = :accountName
+      WITH SECURITY_ENFORCED
+      LIMIT 1
+    ];
+    if (!accounts.isEmpty()) {
+      return accounts[0];
+    }
+    Account newAccount = new Account(Name = accountName);
+    if (!Schema.sObjectType.Account.isCreateable()) {
+      throw new System.NoAccessException();
+    }
+    insert newAccount;
+    return newAccount;
+  }
+
+  public static Contact upsertContactByEmail(
+    String firstName,
+    String lastName,
+    String email,
+    Account account
+  ) {
+    List<Contact> contacts = [
+      SELECT Id, AccountId
+      FROM Contact
+      WHERE Email = :email
+      WITH SECURITY_ENFORCED
+      LIMIT 1
+    ];
+    Contact contact;
     if (!contacts.isEmpty()) {
       contact = contacts[0];
     }
-
     if (contact == null) {
-      Account account = [
-        SELECT Id
-        FROM Account
-        WHERE Name = :accountName
-        WITH SECURITY_ENFORCED
-        LIMIT 1
-      ];
-      if (account == null) {
-        account = new Account(Name = accountName);
-        if (!Schema.sObjectType.Account.isCreateable()) {
-          throw new System.NoAccessException();
-        }
-        insert account;
-      }
       contact = new Contact(
         FirstName = firstName,
         LastName = lastName,
@@ -74,50 +102,46 @@ public with sharing class RegistrationController {
       }
       insert contact;
     }
+    return contact;
+  }
 
-    List<User> existingUsers = [
-      SELECT Id
-      FROM User
-      WHERE ContactId = :contact.Id
-      WITH SECURITY_ENFORCED
-      LIMIT 1
-    ];
+  public static User createUser(
+    String firstName,
+    String lastName,
+    String email,
+    Contact contact
+  ) {
+    Database.DMLOptions dlo = new Database.DMLOptions();
+    dlo.EmailHeader.triggerUserEmail = true;
 
-    if (existingUsers.isEmpty()) {
-      Database.DMLOptions dlo = new Database.DMLOptions();
-      dlo.EmailHeader.triggerUserEmail = true;
-
-      User newUser = new User(
-        FirstName = firstName,
-        LastName = lastName,
-        Email = email,
-        Username = email,
-        Alias = (firstName.substring(0, 1) +
-          lastName.substring(0, 1) +
-          String.valueOf(Math.round(Math.random() * 10000)))
-          .substring(0, 5),
-        TimeZoneSidKey = 'America/New_York',
-        LocaleSidKey = 'en_US',
-        EmailEncodingKey = 'UTF-8',
-        LanguageLocaleKey = 'en_US',
-        ProfileId = [
-          SELECT Id
-          FROM Profile
-          WHERE Name = 'Standard User'
-          LIMIT 1
-        ]
-        .Id,
-        ContactId = contact.Id
-      );
-      newUser.setOptions(dlo);
-      if (!Schema.sObjectType.User.isCreateable()) {
-        throw new System.NoAccessException();
-      }
-      insert newUser;
-      return newUser.Id;
-    } else {
-      return existingUsers[0].Id;
+    User newUser = new User(
+      FirstName = firstName,
+      LastName = lastName,
+      Email = email,
+      Username = email,
+      Alias = (firstName.substring(0, 1) +
+        lastName.substring(0, 1) +
+        String.valueOf(Math.round(Math.random() * 10000)))
+        .substring(0, 5),
+      TimeZoneSidKey = 'America/New_York',
+      LocaleSidKey = 'en_US',
+      EmailEncodingKey = 'UTF-8',
+      LanguageLocaleKey = 'en_US',
+      ProfileId = [
+        SELECT Id
+        FROM Profile
+        WHERE Name = 'Standard User'
+        LIMIT 1
+      ]
+      .Id,
+      ContactId = contact.Id
+    );
+    newUser.setOptions(dlo);
+    if (!Schema.sObjectType.User.isCreateable()) {
+      throw new System.NoAccessException();
     }
+    insert newUser;
+    return newUser;
   }
 
   public class ContactMatchResult {
