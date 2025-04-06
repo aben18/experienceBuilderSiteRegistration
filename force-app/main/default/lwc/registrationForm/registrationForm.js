@@ -114,7 +114,7 @@ export default class RegistrationForm extends LightningElement {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
-        accountName: this.matchedAccount || this.newAccountName
+        accountName: this.newAccountName || this.matchedAccount
       });
 
       console.log("Registration success:", result);
