@@ -28,7 +28,7 @@
             required
           ></lightning-input>
 
-          <div class="slds-m-top_large">
+          <div class="slds-m-top_x-large">
             <lightning-button
               label="Check for an existing Company"
               onclick={findContactMatch}
@@ -72,7 +72,7 @@
             </div>
           </template>
 
-          <div class="slds-m-top_large">
+          <div class="slds-m-top_x-large">
             <lightning-button
               variant="brand"
               label="Sign Up"
@@ -80,6 +80,12 @@
               stretch
               disabled={isSignUpDisabled}
             ></lightning-button>
+          </div>
+
+          <div class="slds-m-top_large slds-text-align_center">
+            <a href="/login" class="slds-text-link">
+              Already have an account? Log in here.
+            </a>
           </div>
         </div>
       </div>
