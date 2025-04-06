@@ -56,7 +56,7 @@ export default class RegistrationForm extends LightningElement {
     return allValid;
   }
 
-  async findContactMatch() {
+  async getAccountByContactEmail() {
     if (!this.validateInputs()) {
       return;
     }
