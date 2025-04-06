@@ -9,6 +9,7 @@ export default class RegistrationForm extends LightningElement {
   @track matchedAccount = "";
   @track accountNotFound = false;
   @track newAccountName = "";
+  @track enterNewAccount = false;
 
   handleInput(event) {
     this[event.target.name] = event.target.value;
@@ -16,7 +17,12 @@ export default class RegistrationForm extends LightningElement {
     if (event.target.name === "email") {
       this.matchedAccount = "";
       this.accountNotFound = false;
+      this.enterNewAccount = false;
     }
+  }
+
+  handleNewAccountCheckboxChange(event) {
+    this.enterNewAccount = event.target.checked;
   }
 
   get isCompanyCheckDisabled() {
@@ -24,7 +30,10 @@ export default class RegistrationForm extends LightningElement {
   }
 
   get showNewAccountField() {
-    return !this.isCompanyCheckDisabled && this.accountNotFound;
+    return (
+      !this.isCompanyCheckDisabled &&
+      (this.accountNotFound || this.enterNewAccount)
+    );
   }
 
   get isSignUpDisabled() {

@@ -40,19 +40,27 @@
           <template if:true={matchedAccount}>
             <div class="slds-m-top_medium">
               <p>
-                Your email is currently associated with
+                Your email is associated with
                 <strong> {matchedAccount}</strong>.
               </p>
+              <lightning-input
+                type="checkbox"
+                label="This isn't the right company."
+                onchange={handleNewAccountCheckboxChange}
+              ></lightning-input>
             </div>
           </template>
 
-          <template if:true={showNewAccountField}>
+          <template if:true={accountNotFound}>
             <div class="slds-m-top_medium">
               <p>
                 We did not find an existing company using your email. Please
                 enter a new company below.
               </p>
             </div>
+          </template>
+
+          <template if:true={showNewAccountField}>
             <div class="slds-m-top_medium">
               <lightning-input
                 label="New Company Name"
