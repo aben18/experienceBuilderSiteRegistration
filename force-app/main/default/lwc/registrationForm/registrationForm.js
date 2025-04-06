@@ -1,5 +1,5 @@
 import { LightningElement, track } from "lwc";
-import findMatchingContact from "@salesforce/apex/RegistrationController.findMatchingContact";
+import getAccountByContactEmail from "@salesforce/apex/RegistrationController.getAccountByContactEmail";
 import submitRegistration from "@salesforce/apex/RegistrationController.submitRegistration";
 
 export default class RegistrationForm extends LightningElement {
@@ -48,14 +48,12 @@ export default class RegistrationForm extends LightningElement {
     }
 
     try {
-      const result = await findMatchingContact({
-        firstName: this.firstName,
-        lastName: this.lastName,
+      const result = await getAccountByContactEmail({
         email: this.email
       });
 
-      if (result && result.AccountName) {
-        this.matchedAccount = result.AccountName;
+      if (result && result.accountName) {
+        this.matchedAccount = result.accountName;
       } else {
         this.matchedAccount = "";
         this.accountNotFound = true;

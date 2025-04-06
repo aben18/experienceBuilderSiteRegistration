@@ -38,7 +38,12 @@
           </div>
 
           <template if:true={matchedAccount}>
-            <p><strong>Matched Account:</strong> {matchedAccount}</p>
+            <div class="slds-m-top_medium">
+              <p>
+                Your email is currently associated with
+                <strong> {matchedAccount}</strong>.
+              </p>
+            </div>
           </template>
 
           <template if:true={showNewAccountField}>

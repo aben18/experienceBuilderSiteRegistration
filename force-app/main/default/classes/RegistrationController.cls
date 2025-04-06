@@ -1,17 +1,17 @@
 public with sharing class RegistrationController {
 
     @AuraEnabled(cacheable=true)
-    public static ContactMatchResult findMatchingContact(String firstName, String lastName, String email) {
-      Contact contact = [
+    public static ContactMatchResult getAccountByContactEmail(String email) {
+      List<Contact> contacts = [
         SELECT Id, Account.Name
         FROM Contact
-        WHERE FirstName = :firstName AND LastName = :lastName AND Email = :email
+        WHERE Email = :email
         WITH SECURITY_ENFORCED
         LIMIT 1
       ];
   
-      if (contact != null && contact.Account != null) {
-        return new ContactMatchResult(contact.Account.Name);
+      if (!contacts.isEmpty() && contacts[0].Account != null) {
+        return new ContactMatchResult(contacts[0].Account.Name);
       }
   
       return new ContactMatchResult(null);
