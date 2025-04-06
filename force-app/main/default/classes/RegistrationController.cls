@@ -38,6 +38,7 @@ public with sharing class RegistrationController {
     Account account = upsertAccountByName(accountName);
     Contact contact = upsertContactByEmail(firstName, lastName, email, account);
     User newUser = createUser(firstName, lastName, email, contact);
+    return newUser.Id;
   }
 
   public static user getUserByUsername(String username) {
