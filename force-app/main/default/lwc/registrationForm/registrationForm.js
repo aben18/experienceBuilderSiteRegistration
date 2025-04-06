@@ -7,7 +7,7 @@ export default class RegistrationForm extends LightningElement {
   @track lastName = "";
   @track email = "";
   @track matchedAccount = "";
-  @track showNewAccountField = false;
+  @track accountNotFound = false;
   @track newAccountName = "";
 
   handleInput(event) {
@@ -16,6 +16,10 @@ export default class RegistrationForm extends LightningElement {
 
   get isCompanyCheckDisabled() {
     return !this.firstName || !this.lastName || !this.email;
+  }
+
+  get showNewAccountField() {
+    return !this.isCompanyCheckDisabled && this.accountNotFound;
   }
 
   get isSignUpDisabled() {
@@ -52,10 +56,9 @@ export default class RegistrationForm extends LightningElement {
 
       if (result && result.AccountName) {
         this.matchedAccount = result.AccountName;
-        this.showNewAccountField = false;
       } else {
         this.matchedAccount = "";
-        this.showNewAccountField = true;
+        this.accountNotFound = true;
       }
     } catch (error) {
       console.error("Contact match error:", error);
