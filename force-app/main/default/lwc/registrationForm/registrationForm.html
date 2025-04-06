@@ -62,14 +62,14 @@
           </template>
 
           <template if:true={showNewAccountField}>
-            <div class="slds-m-top_large">
+            <div class="slds-m-top_medium">
               <lightning-input
                 label="New Company Name"
                 value={newAccountName}
                 onchange={handleCompanySearch}
                 name="newAccountName"
                 type="search"
-                placeholder="Search for a company or enter a new one"
+                placeholder="Search for or enter a new company"
                 required
               ></lightning-input>
               <template if:true={companySearchResults.length}>
