@@ -12,6 +12,11 @@ export default class RegistrationForm extends LightningElement {
 
   handleInput(event) {
     this[event.target.name] = event.target.value;
+
+    if (event.target.name === "email") {
+      this.matchedAccount = "";
+      this.accountNotFound = false;
+    }
   }
 
   get isCompanyCheckDisabled() {
