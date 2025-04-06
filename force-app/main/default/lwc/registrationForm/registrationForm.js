@@ -32,10 +32,12 @@ export default class RegistrationForm extends LightningElement {
   }
 
   get showNewAccountField() {
-    return (
-      !this.isCompanyCheckDisabled &&
-      (this.accountNotFound || this.enterNewAccount)
-    );
+    const shouldShow = this.accountNotFound || this.enterNewAccount;
+    if (!shouldShow) {
+      this.newAccountName = "";
+      this.companySearchResults = [];
+    }
+    return shouldShow;
   }
 
   get isSignUpDisabled() {
