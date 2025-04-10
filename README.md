@@ -1,18 +1,7 @@
-# Salesforce DX Project: Next Steps
+# Self Registration with Company Search
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+**Warning:** It is critical that you understand your external sharing configurations before using this self registration workflow. This will allow external users to create contacts on accounts. Ensure your external organization-wide defaults are private for critical objects and your sharing sets are configured to a profile or permission set other than the one you have configured in this component.
 
-## How Do You Plan to Deploy Your Changes?
+[Read more about external sharing on Trailhead](https://trailhead.salesforce.com/content/learn/projects/communities_share_crm_data/sharing_rules).
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
 
-## Configure Your Salesforce DX Project
-
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
-
-## Read All About It
-
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
