@@ -21,37 +21,27 @@
           required
         ></lightning-input>
 
-        <div class="slds-m-top_x-large">
-          <lightning-button
-            variant="brand-outline"
-            label="Check for an Existing Organization"
-            onclick={getOrganizationByContactEmail}
-            stretch
-          ></lightning-button>
+        <div class="slds-m-top_medium">
+          <lightning-record-picker
+            label="Organization"
+            placeholder="Search Organizations..."
+            object-api-name="Account"
+            value={organizationId}
+            name="organizationId"
+            onfocus={getOrganizationByContactEmail}
+            required
+          ></lightning-record-picker>
         </div>
-
-        <template if:true={organizationSearched}>
-          <div class="slds-m-top_medium">
-            <lightning-record-picker
-              label="Organization"
-              placeholder="Search Organizations..."
-              object-api-name="Account"
-              value={organizationId}
-              name="organizationId"
-              required
-            ></lightning-record-picker>
-          </div>
-          <div class="slds-text-align_center">
-            <p>
-              Can't find your organization?&nbsp;
-              <lightning-button
-                variant="base"
-                label="Create a new one."
-                onclick={handleCreateNewOrganization}
-              ></lightning-button>
-            </p>
-          </div>
-        </template>
+        <div class="slds-text-align_center">
+          <p>
+            Can't find your organization?&nbsp;
+            <lightning-button
+              variant="base"
+              label="Create a new one."
+              onclick={handleCreateNewOrganization}
+            ></lightning-button>
+          </p>
+        </div>
 
         <div class="slds-m-top_x-large">
           <lightning-button
