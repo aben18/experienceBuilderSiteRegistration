@@ -26,6 +26,10 @@ export default class RegistrationForm extends LightningElement {
       this.organizationFound = false;
       this.enterNewOrganization = false;
     }
+
+    if (field === "changeOrganization") {
+      this.enterNewOrganization = event.target.checked;
+    }
   }
 
   validateInputs() {
@@ -71,10 +75,6 @@ export default class RegistrationForm extends LightningElement {
 
   get organizationSearchedNotFound() {
     return this.organizationSearched && !this.organizationFound;
-  }
-
-  handleNewOrganizationCheckboxChange(event) {
-    this.enterNewOrganization = event.target.checked;
   }
 
   get showNewOrganizationField() {
