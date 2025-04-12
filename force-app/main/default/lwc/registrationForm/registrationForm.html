@@ -14,8 +14,8 @@
           required
         ></lightning-input>
         <lightning-input
-          label="Email"
           type="email"
+          label="Email"
           name="email"
           onchange={handleChange}
           required
@@ -33,7 +33,8 @@
         <template if:true={matchedOrganization}>
           <div class="slds-m-top_large">
             <p>
-              Your email is associated with <strong> {matchedOrganization}</strong>.
+              Your email is associated with
+              <strong> {matchedOrganization}</strong>.
             </p>
           </div>
           <div class="slds-m-top_xx-small">
@@ -48,8 +49,8 @@
         <template if:true={isOrganizationNotFound}>
           <div class="slds-m-top_large">
             <p>
-              We did not find an existing organization using your email. Please enter
-              a new organization name below.
+              We did not find an existing organization using your email. Please
+              enter a new organization name below.
             </p>
           </div>
         </template>
@@ -69,7 +70,10 @@
               <ul
                 class="slds-listbox_vertical slds-dropdown slds-dropdown_fluid"
               >
-                <template for:each={organizationSearchResults} for:item="organization">
+                <template
+                  for:each={organizationSearchResults}
+                  for:item="organization"
+                >
                   <li
                     class="slds-listbox__item"
                     key={organization.Id}
