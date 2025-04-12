@@ -1,7 +1,7 @@
 import { LightningElement } from "lwc";
 import getAccountByContactEmail from "@salesforce/apex/RegistrationController.getAccountByContactEmail";
-import getAccountByName from "@salesforce/apex/RegistrationController.getAccountByName";
 import submitRegistration from "@salesforce/apex/RegistrationController.submitRegistration";
+import RegistrationFormOrganizationModal from "c/registrationFormOrganizationModal";
 
 export default class RegistrationForm extends LightningElement {
   firstName = "";
@@ -91,29 +91,15 @@ export default class RegistrationForm extends LightningElement {
     return !this.organizationId && !this.newOrganizationName;
   }
 
-  async handleOrganizationSearch(event) {
-    const searchTerm = event.target.value;
-    this.newOrganizationName = searchTerm;
-
-    if (searchTerm.length < 2) {
-      this.organizationSearchResults = [];
-      return;
+  async handleCreateNewOrganization() {
+    const result = await RegistrationFormOrganizationModal.open({
+      description: "Create a new organization",
+      size: "small"
+    });
+    console.log("Modal result:", result);
+    if (result) {
+      this.organizationId = result;
     }
-
-    try {
-      const results = await getAccountByName({ name: searchTerm });
-      this.organizationSearchResults = results;
-    } catch (error) {
-      console.error("Error searching for organizations:", error);
-      this.organizationSearchResults = [];
-    }
-  }
-
-  handleOrganizationSelect(event) {
-    const selectedOrganizationName = event.currentTarget.dataset.name;
-
-    this.newOrganizationName = selectedOrganizationName; // Updated variable name
-    this.organizationSearchResults = []; // Clear the dropdown after selection
   }
 
   async handleSubmit() {

@@ -30,67 +30,26 @@
           ></lightning-button>
         </div>
 
-        <template if:true={organizationSearchedFound}>
-          <div class="slds-m-top_large">
-            <p>
-              Your email is associated with
-              <strong> {organizationName}</strong>.
-            </p>
-          </div>
-          <div class="slds-m-top_xx-small">
-            <lightning-input
-              type="checkbox"
-              label="I want to change this organization."
-              name="changeOrganization"
-              onchange={handleChange}
-            ></lightning-input>
-          </div>
-        </template>
-
-        <template if:true={organizationSearchedNotFound}>
-          <div class="slds-m-top_large">
-            <p>
-              We did not find an existing organization using your email. Please
-              enter a new organization name below.
-            </p>
-          </div>
-        </template>
-
-        <template if:true={showNewOrganizationField}>
+        <template if:true={organizationSearched}>
           <div class="slds-m-top_medium">
-            <lightning-input
-              type="search"
-              label="New Organization Name"
-              placeholder="Search for or enter a new organization"
-              value={newOrganizationName}
-              name="newOrganizationName"
-              onchange={handleOrganizationSearch}
+            <lightning-record-picker
+              label="Organization"
+              placeholder="Search Organizations..."
+              object-api-name="Account"
+              value={organizationId}
+              name="organizationId"
               required
-            ></lightning-input>
-            <template if:true={organizationSearchResults.length}>
-              <ul
-                class="slds-listbox_vertical slds-dropdown slds-dropdown_fluid"
-              >
-                <template
-                  for:each={organizationSearchResults}
-                  for:item="organization"
-                >
-                  <li
-                    class="slds-listbox__item"
-                    key={organization.Id}
-                    onclick={handleOrganizationSelect}
-                    data-id={organization.Id}
-                    data-name={organization.Name}
-                  >
-                    <div
-                      class="slds-listbox__option slds-listbox__option_plain"
-                    >
-                      {organization.Name}
-                    </div>
-                  </li>
-                </template>
-              </ul>
-            </template>
+            ></lightning-record-picker>
+          </div>
+          <div class="slds-text-align_center">
+            <p>
+              Can't find your organization?&nbsp;
+              <lightning-button
+                variant="base"
+                label="Create a new one."
+                onclick={handleCreateNewOrganization}
+              ></lightning-button>
+            </p>
           </div>
         </template>
 

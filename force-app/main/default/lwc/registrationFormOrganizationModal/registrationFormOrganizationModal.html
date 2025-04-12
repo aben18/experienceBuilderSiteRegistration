@@ -1,0 +1,21 @@
+<template>
+  <lightning-modal-header
+    label="Create an Organization"
+  ></lightning-modal-header>
+  <lightning-modal-body>
+    <lightning-input
+      type="text"
+      label="Organization Name"
+      name="organizationName"
+      onchange={handleChange}
+      required
+    ></lightning-input>
+  </lightning-modal-body>
+  <lightning-modal-footer>
+    <lightning-button
+      variant="brand"
+      label="Create"
+      onclick={handleCreateOrganization}
+    ></lightning-button>
+  </lightning-modal-footer>
+</template>

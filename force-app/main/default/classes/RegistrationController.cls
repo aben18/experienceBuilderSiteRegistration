@@ -18,17 +18,6 @@ public with sharing class RegistrationController {
     );
   }
 
-  @AuraEnabled(cacheable=true)
-  public static List<Account> getAccountByName(String name) {
-    return [
-      SELECT Id, Name
-      FROM Account
-      WHERE Name LIKE :('%' + name + '%')
-      WITH SECURITY_ENFORCED
-      LIMIT 10
-    ];
-  }
-
   @AuraEnabled
   public static String submitRegistration(
     String firstName,
