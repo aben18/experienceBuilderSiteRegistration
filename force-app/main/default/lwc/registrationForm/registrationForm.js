@@ -9,7 +9,8 @@ export default class RegistrationForm extends LightningElement {
   email = "";
   organizationId = "";
   organizationName = "";
-  organizationNotFound = false;
+  organizationSearched = false;
+  organizationFound = false;
   newOrganizationName = "";
   enterNewOrganization = false;
   organizationSearchResults = [];
@@ -21,7 +22,8 @@ export default class RegistrationForm extends LightningElement {
     if (field === "email") {
       this.organizationId = "";
       this.organizationName = "";
-      this.organizationNotFound = false;
+      this.organizationSearched = false;
+      this.organizationFound = false;
       this.enterNewOrganization = false;
     }
   }
@@ -52,12 +54,23 @@ export default class RegistrationForm extends LightningElement {
       if (result) {
         this.organizationId = result.Id;
         this.organizationName = result.Name;
+        this.organizationSearched = true;
+        this.organizationFound = true;
       } else {
-        this.organizationNotFound = true;
+        this.organizationSearched = true;
+        this.organizationFound = false;
       }
     } catch (error) {
       console.error("Contact match error:", error);
     }
+  }
+
+  get organizationSearchedFound() {
+    return this.organizationSearched && this.organizationFound;
+  }
+
+  get organizationSearchedNotFound() {
+    return this.organizationSearched && !this.organizationFound;
   }
 
   handleNewOrganizationCheckboxChange(event) {

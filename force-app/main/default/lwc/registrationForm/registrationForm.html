@@ -30,11 +30,11 @@
           ></lightning-button>
         </div>
 
-        <template if:true={matchedOrganization}>
+        <template if:true={organizationSearchedFound}>
           <div class="slds-m-top_large">
             <p>
               Your email is associated with
-              <strong> {matchedOrganization}</strong>.
+              <strong> {organizationName}</strong>.
             </p>
           </div>
           <div class="slds-m-top_xx-small">
@@ -46,7 +46,7 @@
           </div>
         </template>
 
-        <template if:true={organizationNotFound}>
+        <template if:true={organizationSearchedNotFound}>
           <div class="slds-m-top_large">
             <p>
               We did not find an existing organization using your email. Please
