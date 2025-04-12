@@ -8,28 +8,11 @@ export default class RegistrationForm extends LightningElement {
   lastName = "";
   email = "";
   organizationId = "";
-  organizationName = "";
-  organizationSearched = false;
-  organizationFound = false;
-  changeOrganization = false;
-  newOrganizationName = "";
   organizationSearchResults = [];
 
   handleChange(event) {
     const field = event.target.name;
     this[field] = event.target.value;
-
-    if (field === "email") {
-      this.organizationId = "";
-      this.organizationName = "";
-      this.organizationSearched = false;
-      this.organizationFound = false;
-      this.changeOrganization = false;
-    }
-
-    if (field === "changeOrganization") {
-      this.changeOrganization = event.target.checked;
-    }
   }
 
   validateInputs() {
@@ -57,38 +40,10 @@ export default class RegistrationForm extends LightningElement {
 
       if (result) {
         this.organizationId = result.Id;
-        this.organizationName = result.Name;
-        this.organizationSearched = true;
-        this.organizationFound = true;
-      } else {
-        this.organizationSearched = true;
-        this.organizationFound = false;
       }
     } catch (error) {
       console.error("Contact match error:", error);
     }
-  }
-
-  get organizationSearchedFound() {
-    return this.organizationSearched && this.organizationFound;
-  }
-
-  get organizationSearchedNotFound() {
-    return this.organizationSearched && !this.organizationFound;
-  }
-
-  get showNewOrganizationField() {
-    const shouldShow =
-      this.organizationSearchedNotFound || this.changeOrganization;
-    if (!shouldShow) {
-      this.newOrganizationName = "";
-      this.organizationSearchResults = [];
-    }
-    return shouldShow;
-  }
-
-  get isSignUpDisabled() {
-    return !this.organizationId && !this.newOrganizationName;
   }
 
   async handleCreateNewOrganization() {
@@ -102,6 +57,10 @@ export default class RegistrationForm extends LightningElement {
     }
   }
 
+  get isSignUpDisabled() {
+    return !this.lastName || !this.email || !this.organizationId;
+  }
+
   async handleSubmit() {
     if (!this.validateInputs()) {
       return;
@@ -112,7 +71,7 @@ export default class RegistrationForm extends LightningElement {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
-        accountName: this.newOrganizationName || this.organizationName
+        accountId: this.organizationId
       });
 
       console.log("Registration success:", result);
