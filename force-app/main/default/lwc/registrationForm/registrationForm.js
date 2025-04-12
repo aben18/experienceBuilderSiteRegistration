@@ -11,8 +11,8 @@ export default class RegistrationForm extends LightningElement {
   organizationName = "";
   organizationSearched = false;
   organizationFound = false;
+  changeOrganization = false;
   newOrganizationName = "";
-  enterNewOrganization = false;
   organizationSearchResults = [];
 
   handleChange(event) {
@@ -24,11 +24,11 @@ export default class RegistrationForm extends LightningElement {
       this.organizationName = "";
       this.organizationSearched = false;
       this.organizationFound = false;
-      this.enterNewOrganization = false;
+      this.changeOrganization = false;
     }
 
     if (field === "changeOrganization") {
-      this.enterNewOrganization = event.target.checked;
+      this.changeOrganization = event.target.checked;
     }
   }
 
@@ -78,7 +78,8 @@ export default class RegistrationForm extends LightningElement {
   }
 
   get showNewOrganizationField() {
-    const shouldShow = this.organizationNotFound || this.enterNewOrganization;
+    const shouldShow =
+      this.organizationSearchedNotFound || this.changeOrganization;
     if (!shouldShow) {
       this.newOrganizationName = "";
       this.organizationSearchResults = [];
