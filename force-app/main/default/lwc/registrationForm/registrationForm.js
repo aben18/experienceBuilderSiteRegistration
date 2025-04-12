@@ -24,30 +24,6 @@ export default class RegistrationForm extends LightningElement {
     }
   }
 
-  handleNewOrganizationCheckboxChange(event) {
-    this.enterNewOrganization = event.target.checked;
-  }
-
-  get isOrganizationCheckDisabled() {
-    return !this.email;
-  }
-
-  get showNewOrganizationField() {
-    const shouldShow = this.isOrganizationNotFound || this.enterNewOrganization;
-    if (!shouldShow) {
-      this.newOrganizationName = "";
-      this.organizationSearchResults = [];
-    }
-    return shouldShow;
-  }
-
-  get isSignUpDisabled() {
-    return (
-      this.isOrganizationCheckDisabled ||
-      (!this.matchedOrganization && !this.newOrganizationName)
-    );
-  }
-
   validateInputs() {
     const allInputs = this.template.querySelectorAll("lightning-input");
     let allValid = true;
@@ -80,6 +56,25 @@ export default class RegistrationForm extends LightningElement {
     } catch (error) {
       console.error("Contact match error:", error);
     }
+  }
+
+  handleNewOrganizationCheckboxChange(event) {
+    this.enterNewOrganization = event.target.checked;
+  }
+
+  get showNewOrganizationField() {
+    const shouldShow = this.isOrganizationNotFound || this.enterNewOrganization;
+    if (!shouldShow) {
+      this.newOrganizationName = "";
+      this.organizationSearchResults = [];
+    }
+    return shouldShow;
+  }
+
+  get isSignUpDisabled() {
+    return (
+      (!this.matchedOrganization && !this.newOrganizationName)
+    );
   }
 
   async handleOrganizationSearch(event) {
