@@ -8,7 +8,6 @@ export default class RegistrationForm extends LightningElement {
   lastName = "";
   email = "";
   organizationId = "";
-  organizationSearchResults = [];
 
   handleChange(event) {
     const field = event.target.name;
