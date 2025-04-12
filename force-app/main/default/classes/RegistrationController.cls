@@ -1,6 +1,6 @@
 public with sharing class RegistrationController {
   @AuraEnabled(cacheable=true)
-  public static ContactMatchResult getAccountByContactEmail(String email) {
+  public static Account getAccountByContactEmail(String email) {
     List<Contact> contacts = [
       SELECT Id, Account.Name
       FROM Contact
@@ -9,11 +9,13 @@ public with sharing class RegistrationController {
       LIMIT 1
     ];
 
-    if (!contacts.isEmpty() && contacts[0].Account != null) {
-      return new ContactMatchResult(contacts[0].Account.Name);
+    if (contacts.isEmpty()) {
+      return null;
     }
-
-    return new ContactMatchResult(null);
+    return new Account(
+      Id = contacts[0].Account.Id,
+      Name = contacts[0].Account.Name
+    );
   }
 
   @AuraEnabled(cacheable=true)
