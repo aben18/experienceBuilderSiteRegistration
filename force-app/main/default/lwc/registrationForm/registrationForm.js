@@ -7,8 +7,9 @@ export default class RegistrationForm extends LightningElement {
   firstName = "";
   lastName = "";
   email = "";
-  matchedOrganization = "";
-  isOrganizationNotFound = false;
+  organizationId = "";
+  organizationName = "";
+  organizationNotFound = false;
   newOrganizationName = "";
   enterNewOrganization = false;
   organizationSearchResults = [];
@@ -18,8 +19,9 @@ export default class RegistrationForm extends LightningElement {
     this[field] = event.target.value;
 
     if (field === "email") {
-      this.matchedOrganization = "";
-      this.isOrganizationNotFound = false;
+      this.organizationId = "";
+      this.organizationName = "";
+      this.organizationNotFound = false;
       this.enterNewOrganization = false;
     }
   }
@@ -47,11 +49,11 @@ export default class RegistrationForm extends LightningElement {
         email: this.email
       });
 
-      if (result && result.organizationName) {
-        this.matchedOrganization = result.organizationName;
+      if (result) {
+        this.organizationId = result.Id;
+        this.organizationName = result.Name;
       } else {
-        this.matchedOrganization = "";
-        this.isOrganizationNotFound = true;
+        this.organizationNotFound = true;
       }
     } catch (error) {
       console.error("Contact match error:", error);
@@ -63,7 +65,7 @@ export default class RegistrationForm extends LightningElement {
   }
 
   get showNewOrganizationField() {
-    const shouldShow = this.isOrganizationNotFound || this.enterNewOrganization;
+    const shouldShow = this.organizationNotFound || this.enterNewOrganization;
     if (!shouldShow) {
       this.newOrganizationName = "";
       this.organizationSearchResults = [];
@@ -72,9 +74,7 @@ export default class RegistrationForm extends LightningElement {
   }
 
   get isSignUpDisabled() {
-    return (
-      (!this.matchedOrganization && !this.newOrganizationName)
-    );
+    return !this.organizationId && !this.newOrganizationName;
   }
 
   async handleOrganizationSearch(event) {
@@ -112,7 +112,7 @@ export default class RegistrationForm extends LightningElement {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
-        accountName: this.newOrganizationName || this.matchedOrganization
+        accountName: this.newOrganizationName || this.organizationName
       });
 
       console.log("Registration success:", result);
