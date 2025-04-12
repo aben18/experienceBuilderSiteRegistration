@@ -1,22 +1,23 @@
-import { LightningElement, track } from "lwc";
+import { LightningElement } from "lwc";
 import getAccountByContactEmail from "@salesforce/apex/RegistrationController.getAccountByContactEmail";
 import getAccountByName from "@salesforce/apex/RegistrationController.getAccountByName";
 import submitRegistration from "@salesforce/apex/RegistrationController.submitRegistration";
 
 export default class RegistrationForm extends LightningElement {
-  @track firstName = "";
-  @track lastName = "";
-  @track email = "";
-  @track matchedOrganization = "";
-  @track isOrganizationNotFound = false;
-  @track newOrganizationName = "";
-  @track enterNewOrganization = false;
-  @track organizationSearchResults = [];
+  firstName = "";
+  lastName = "";
+  email = "";
+  matchedOrganization = "";
+  isOrganizationNotFound = false;
+  newOrganizationName = "";
+  enterNewOrganization = false;
+  organizationSearchResults = [];
 
-  handleInput(event) {
-    this[event.target.name] = event.target.value;
+  handleChange(event) {
+    const field = event.target.name;
+    this[field] = event.target.value;
 
-    if (event.target.name === "email") {
+    if (field === "email") {
       this.matchedOrganization = "";
       this.isOrganizationNotFound = false;
       this.enterNewOrganization = false;

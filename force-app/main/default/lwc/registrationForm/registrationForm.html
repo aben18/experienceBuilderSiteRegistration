@@ -4,23 +4,20 @@
       <div class="slds-card__body slds-card__body_inner">
         <lightning-input
           label="First Name"
-          value={firstName}
           name="firstName"
-          onchange={handleInput}
+          onchange={handleChange}
         ></lightning-input>
         <lightning-input
           label="Last Name"
-          value={lastName}
           name="lastName"
-          onchange={handleInput}
+          onchange={handleChange}
           required
         ></lightning-input>
         <lightning-input
           label="Email"
           type="email"
-          value={email}
           name="email"
-          onchange={handleInput}
+          onchange={handleChange}
           required
         ></lightning-input>
 
