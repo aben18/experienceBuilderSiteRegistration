@@ -7,43 +7,43 @@ export default class RegistrationForm extends LightningElement {
   @track firstName = "";
   @track lastName = "";
   @track email = "";
-  @track matchedAccount = "";
-  @track accountNotFound = false;
-  @track newAccountName = "";
-  @track enterNewAccount = false;
-  @track companySearchResults = [];
+  @track matchedOrganization = "";
+  @track isOrganizationNotFound = false;
+  @track newOrganizationName = "";
+  @track enterNewOrganization = false;
+  @track organizationSearchResults = [];
 
   handleInput(event) {
     this[event.target.name] = event.target.value;
 
     if (event.target.name === "email") {
-      this.matchedAccount = "";
-      this.accountNotFound = false;
-      this.enterNewAccount = false;
+      this.matchedOrganization = "";
+      this.isOrganizationNotFound = false;
+      this.enterNewOrganization = false;
     }
   }
 
-  handleNewAccountCheckboxChange(event) {
-    this.enterNewAccount = event.target.checked;
+  handleNewOrganizationCheckboxChange(event) {
+    this.enterNewOrganization = event.target.checked;
   }
 
-  get isCompanyCheckDisabled() {
+  get isOrganizationCheckDisabled() {
     return !this.email;
   }
 
-  get showNewAccountField() {
-    const shouldShow = this.accountNotFound || this.enterNewAccount;
+  get showNewOrganizationField() {
+    const shouldShow = this.isOrganizationNotFound || this.enterNewOrganization;
     if (!shouldShow) {
-      this.newAccountName = "";
-      this.companySearchResults = [];
+      this.newOrganizationName = "";
+      this.organizationSearchResults = [];
     }
     return shouldShow;
   }
 
   get isSignUpDisabled() {
     return (
-      this.isCompanyCheckDisabled ||
-      (!this.matchedAccount && !this.newAccountName)
+      this.isOrganizationCheckDisabled ||
+      (!this.matchedOrganization && !this.newOrganizationName)
     );
   }
 
@@ -60,7 +60,7 @@ export default class RegistrationForm extends LightningElement {
     return allValid;
   }
 
-  async getAccountByContactEmail() {
+  async getOrganizationByContactEmail() {
     if (!this.validateInputs()) {
       return;
     }
@@ -70,40 +70,40 @@ export default class RegistrationForm extends LightningElement {
         email: this.email
       });
 
-      if (result && result.accountName) {
-        this.matchedAccount = result.accountName;
+      if (result && result.organizationName) {
+        this.matchedOrganization = result.organizationName;
       } else {
-        this.matchedAccount = "";
-        this.accountNotFound = true;
+        this.matchedOrganization = "";
+        this.isOrganizationNotFound = true;
       }
     } catch (error) {
       console.error("Contact match error:", error);
     }
   }
 
-  async handleCompanySearch(event) {
+  async handleOrganizationSearch(event) {
     const searchTerm = event.target.value;
-    this.newAccountName = searchTerm;
+    this.newOrganizationName = searchTerm;
 
     if (searchTerm.length < 2) {
-      this.companySearchResults = [];
+      this.organizationSearchResults = [];
       return;
     }
 
     try {
       const results = await getAccountByName({ name: searchTerm });
-      this.companySearchResults = results;
+      this.organizationSearchResults = results;
     } catch (error) {
-      console.error("Error searching for companies:", error);
-      this.companySearchResults = [];
+      console.error("Error searching for organizations:", error);
+      this.organizationSearchResults = [];
     }
   }
 
-  handleCompanySelect(event) {
-    const selectedCompanyName = event.currentTarget.dataset.name;
+  handleOrganizationSelect(event) {
+    const selectedOrganizationName = event.currentTarget.dataset.name;
 
-    this.newAccountName = selectedCompanyName;
-    this.companySearchResults = []; // Clear the dropdown after selection
+    this.newOrganizationName = selectedOrganizationName; // Updated variable name
+    this.organizationSearchResults = []; // Clear the dropdown after selection
   }
 
   async handleSubmit() {
@@ -116,7 +116,7 @@ export default class RegistrationForm extends LightningElement {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
-        accountName: this.newAccountName || this.matchedAccount
+        accountName: this.newOrganizationName || this.matchedOrganization
       });
 
       console.log("Registration success:", result);

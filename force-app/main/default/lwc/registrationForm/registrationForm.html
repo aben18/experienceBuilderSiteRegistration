@@ -27,64 +27,64 @@
         <div class="slds-m-top_x-large">
           <lightning-button
             variant="brand-outline"
-            label="Check for an Existing Company"
-            onclick={getAccountByContactEmail}
+            label="Check for an Existing Organization"
+            onclick={getOrganizationByContactEmail}
             stretch
-            disabled={isCompanyCheckDisabled}
+            disabled={isOrganizationCheckDisabled}
           ></lightning-button>
         </div>
 
-        <template if:true={matchedAccount}>
+        <template if:true={matchedOrganization}>
           <div class="slds-m-top_large">
             <p>
-              Your email is associated with <strong> {matchedAccount}</strong>.
+              Your email is associated with <strong> {matchedOrganization}</strong>.
             </p>
           </div>
           <div class="slds-m-top_xx-small">
             <lightning-input
               type="checkbox"
-              label="I want to change this company."
-              onchange={handleNewAccountCheckboxChange}
+              label="I want to change this organization."
+              onchange={handleNewOrganizationCheckboxChange}
             ></lightning-input>
           </div>
         </template>
 
-        <template if:true={accountNotFound}>
+        <template if:true={isOrganizationNotFound}>
           <div class="slds-m-top_large">
             <p>
-              We did not find an existing company using your email. Please enter
-              a new company below.
+              We did not find an existing organization using your email. Please enter
+              a new organization name below.
             </p>
           </div>
         </template>
 
-        <template if:true={showNewAccountField}>
+        <template if:true={showNewOrganizationField}>
           <div class="slds-m-top_medium">
             <lightning-input
               type="search"
-              label="New Company Name"
-              placeholder="Search for or enter a new company"
-              value={newAccountName}
-              name="newAccountName"
-              onchange={handleCompanySearch}
+              label="New Organization Name"
+              placeholder="Search for or enter a new organization"
+              value={newOrganizationName}
+              name="newOrganizationName"
+              onchange={handleOrganizationSearch}
               required
             ></lightning-input>
-            <template if:true={companySearchResults.length}>
+            <template if:true={organizationSearchResults.length}>
               <ul
                 class="slds-listbox_vertical slds-dropdown slds-dropdown_fluid"
               >
-                <template for:each={companySearchResults} for:item="company">
+                <template for:each={organizationSearchResults} for:item="organization">
                   <li
                     class="slds-listbox__item"
-                    key={company.Id}
-                    onclick={handleCompanySelect}
-                    data-id={company.Id}
-                    data-name={company.Name}
+                    key={organization.Id}
+                    onclick={handleOrganizationSelect}
+                    data-id={organization.Id}
+                    data-name={organization.Name}
                   >
                     <div
                       class="slds-listbox__option slds-listbox__option_plain"
                     >
-                      {company.Name}
+                      {organization.Name}
                     </div>
                   </li>
                 </template>
