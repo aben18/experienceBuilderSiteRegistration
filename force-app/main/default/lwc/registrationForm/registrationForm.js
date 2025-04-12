@@ -6,6 +6,7 @@ import RegistrationFormOrganizationModal from "c/registrationFormOrganizationMod
 export default class RegistrationForm extends LightningElement {
   firstName = "";
   lastName = "";
+  title = "";
   email = "";
   organizationId = "";
 
@@ -69,6 +70,7 @@ export default class RegistrationForm extends LightningElement {
       const result = await submitRegistration({
         firstName: this.firstName,
         lastName: this.lastName,
+        title: this.title,
         email: this.email,
         accountId: this.organizationId
       });
@@ -77,5 +79,10 @@ export default class RegistrationForm extends LightningElement {
     } catch (error) {
       console.error("Submit error:", error);
     }
+  }
+
+  handleLoginRedirect() {
+    const loginUrl = "/login";
+    window.location.href = loginUrl;
   }
 }
