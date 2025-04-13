@@ -70,12 +70,7 @@ export default class RegistrationForm extends LightningElement {
     }
 
     try {
-      await submitRegistration({
-        firstName: this.contact.firstName,
-        lastName: this.contact.lastName,
-        email: this.contact.email,
-        accountId: this.contact.accountId
-      });
+      await submitRegistration(this.contact);
     } catch (error) {
       console.error("Submit error:", error);
     }
