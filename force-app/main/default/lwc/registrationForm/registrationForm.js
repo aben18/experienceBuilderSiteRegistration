@@ -78,6 +78,12 @@ export default class RegistrationForm extends LightningElement {
     } catch (error) {
       console.error("Submit error:", error);
     }
+    this.handleRegistrationConfirmationRedirect();
+  }
+
+  handleRegistrationConfirmationRedirect() {
+    const registrationConfirmationUrl = "/CheckPasswordResetEmail";
+    window.location.href = registrationConfirmationUrl;
   }
 
   handleLoginRedirect() {
