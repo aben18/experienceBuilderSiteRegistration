@@ -12,10 +12,7 @@ public with sharing class RegistrationController {
     if (contacts.isEmpty()) {
       return null;
     }
-    return new Account(
-      Id = contacts[0].Account.Id,
-      Name = contacts[0].Account.Name
-    );
+    return new Account(Id = contacts[0].Account.Id);
   }
 
   @AuraEnabled
