@@ -20,18 +20,15 @@
           onchange={handleChange}
           required
         ></lightning-input>
-
-        <div class="slds-m-top_medium">
-          <lightning-record-picker
-            label="Organization"
-            placeholder="Search Organizations..."
-            object-api-name="Account"
-            value={contact.accountId}
-            onfocus={getOrganizationByContactEmail}
-            onchange={handleChange}
-            required
-          ></lightning-record-picker>
-        </div>
+        <lightning-record-picker
+          label="Organization"
+          placeholder="Search Organizations..."
+          object-api-name="Account"
+          value={contact.accountId}
+          onfocus={getOrganizationByContactEmail}
+          onchange={handleChange}
+          required
+        ></lightning-record-picker>
         <div class="slds-text-align_center">
           <p>
             Can't find your organization?&nbsp;
@@ -42,7 +39,6 @@
             ></lightning-button>
           </p>
         </div>
-
         <div class="slds-m-top_x-large">
           <lightning-button
             variant="brand"
@@ -52,8 +48,7 @@
             disabled={isSignUpDisabled}
           ></lightning-button>
         </div>
-
-        <div class="slds-m-vertical_large slds-text-align_center">
+        <div class="slds-m-vertical_medium slds-text-align_center">
           <lightning-button
             variant="base"
             label="Already have an account?"
