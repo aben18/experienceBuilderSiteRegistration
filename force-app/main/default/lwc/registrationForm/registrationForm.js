@@ -65,14 +65,12 @@ export default class RegistrationForm extends LightningElement {
     }
 
     try {
-      const result = await submitRegistration({
+      await submitRegistration({
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
         accountId: this.organizationId
       });
-
-      console.log("Registration success:", result);
     } catch (error) {
       console.error("Submit error:", error);
     }
