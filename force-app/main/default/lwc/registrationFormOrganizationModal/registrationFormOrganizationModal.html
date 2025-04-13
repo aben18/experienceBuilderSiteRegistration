@@ -13,9 +13,15 @@
   </lightning-modal-body>
   <lightning-modal-footer>
     <lightning-button
+      variant="neutral"
+      label="Cancel"
+      onclick={handleCancel}
+    ></lightning-button>
+    <lightning-button
+      class="slds-m-left_x-small"
       variant="brand"
-      label="Create"
-      onclick={handleCreateOrganization}
+      label="Save"
+      onclick={handleSave}
     ></lightning-button>
   </lightning-modal-footer>
 </template>

@@ -12,7 +12,28 @@ export default class RegistrationFormOrganizationModal extends LightningModal {
     this[field] = event.target.value;
   }
 
-  async handleCreateOrganization() {
+  handleCancel() {
+    this.close();
+  }
+
+  validateInputs() {
+    const allInputs = this.template.querySelectorAll("lightning-input");
+    let allValid = true;
+
+    allInputs.forEach((input) => {
+      if (!input.reportValidity()) {
+        allValid = false;
+      }
+    });
+
+    return allValid;
+  }
+
+  async handleSave() {
+    if (!this.validateInputs()) {
+      return;
+    }
+
     const fields = {};
     fields[NAME_FIELD.fieldApiName] = this.organizationName;
     const recordInput = { apiName: ACCOUNT_OBJECT.objectApiName, fields };
