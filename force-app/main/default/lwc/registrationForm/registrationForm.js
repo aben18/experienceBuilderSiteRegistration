@@ -51,7 +51,6 @@ export default class RegistrationForm extends LightningElement {
       description: "Create a new organization",
       size: "small"
     });
-    console.log("Modal result:", result);
     if (result) {
       this.organizationId = result;
     }
