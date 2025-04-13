@@ -26,9 +26,9 @@
             label="Organization"
             placeholder="Search Organizations..."
             object-api-name="Account"
-            value={organizationId}
-            name="organizationId"
+            value={contact.accountId}
             onfocus={getOrganizationByContactEmail}
+            onchange={handleChange}
             required
           ></lightning-record-picker>
         </div>

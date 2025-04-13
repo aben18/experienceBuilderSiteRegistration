@@ -1,17 +1,20 @@
-import { LightningElement } from "lwc";
+import { LightningElement, track } from "lwc";
 import getAccountByContactEmail from "@salesforce/apex/RegistrationController.getAccountByContactEmail";
 import submitRegistration from "@salesforce/apex/RegistrationController.submitRegistration";
 import RegistrationFormOrganizationModal from "c/registrationFormOrganizationModal";
 
 export default class RegistrationForm extends LightningElement {
-  firstName = "";
-  lastName = "";
-  email = "";
-  organizationId = "";
+  // Track is required to make nested properties reactive
+  @track contact = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    accountId: ""
+  };
 
   handleChange(event) {
     const field = event.target.name;
-    this[field] = event.target.value;
+    this.contact[field] = event.target.value;
   }
 
   validateInputs() {
@@ -34,12 +37,12 @@ export default class RegistrationForm extends LightningElement {
 
     try {
       const result = await getAccountByContactEmail({
-        email: this.email
+        email: this.contact.email
       });
-
       if (result) {
-        this.organizationId = result.Id;
+        this.contact.accountId = result.Id;
       }
+      console.log("Contact Account ID:", this.contact.accountId);
     } catch (error) {
       console.error("Contact match error:", error);
     }
@@ -51,12 +54,14 @@ export default class RegistrationForm extends LightningElement {
       size: "small"
     });
     if (result) {
-      this.organizationId = result;
+      this.contact.accountId = result;
     }
   }
 
   get isSignUpDisabled() {
-    return !this.lastName || !this.email || !this.organizationId;
+    return (
+      !this.contact.lastName || !this.contact.email || !this.contact.accountId
+    );
   }
 
   async handleSubmit() {
@@ -66,10 +71,10 @@ export default class RegistrationForm extends LightningElement {
 
     try {
       await submitRegistration({
-        firstName: this.firstName,
-        lastName: this.lastName,
-        email: this.email,
-        accountId: this.organizationId
+        firstName: this.contact.firstName,
+        lastName: this.contact.lastName,
+        email: this.contact.email,
+        accountId: this.contact.accountId
       });
     } catch (error) {
       console.error("Submit error:", error);
