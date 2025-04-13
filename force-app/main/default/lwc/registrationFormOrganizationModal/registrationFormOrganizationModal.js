@@ -39,7 +39,6 @@ export default class RegistrationFormOrganizationModal extends LightningModal {
     const recordInput = { apiName: ACCOUNT_OBJECT.objectApiName, fields };
     try {
       const account = await createRecord(recordInput);
-      console.log("Account created:", account);
       this.accountId = account.id;
     } catch (error) {
       console.error("Error creating account:", error);
