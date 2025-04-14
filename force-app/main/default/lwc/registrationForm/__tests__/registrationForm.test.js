@@ -1,4 +1,4 @@
-import { createElement } from 'lwc';
+import { createElement } from 'lwc/';
 import RegistrationForm from 'c/registrationForm';
 
 describe('c-registration-form', () => {

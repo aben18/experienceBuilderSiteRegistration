@@ -1,4 +1,4 @@
-import { createElement } from 'lwc';
+import { createElement } from '@lwc/';
 import RegistrationFormOrganizationModal from 'c/registrationFormOrganizationModal';
 
 describe('c-registration-form-organization-modal', () => {
