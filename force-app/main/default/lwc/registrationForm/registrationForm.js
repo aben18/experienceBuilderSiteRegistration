@@ -15,6 +15,12 @@ export default class RegistrationForm extends LightningElement {
   handleChange(event) {
     const field = event.target.name;
     this.contact[field] = event.target.value;
+    if (field === "email") {
+      this.organizationSearchComplete = false;
+    }
+    if (field === "accountId") {
+      this.contact.accountId = event.detail.recordId;
+    }
   }
 
   validateInputs() {
@@ -30,6 +36,13 @@ export default class RegistrationForm extends LightningElement {
     return allValid;
   }
 
+  handleOrganizationFocus() {
+    if (!this.organizationSearchComplete) {
+      this.getOrganizationByContactEmail();
+      this.organizationSearchComplete = true;
+    }
+  }
+
   async getOrganizationByContactEmail() {
     if (!this.validateInputs()) {
       return;
@@ -42,7 +55,6 @@ export default class RegistrationForm extends LightningElement {
       if (result) {
         this.contact.accountId = result.Id;
       }
-      console.log("Contact Account ID:", this.contact.accountId);
     } catch (error) {
       console.error("Contact match error:", error);
     }
