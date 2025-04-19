@@ -29,7 +29,7 @@ export default class SelfRegisterWithAccountModal extends LightningModal {
     return allValid;
   }
 
-  async handleSave() {
+  async handleSubmit() {
     if (!this.validateInputs()) {
       return;
     }
