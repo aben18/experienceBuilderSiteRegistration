@@ -1,4 +1,4 @@
-public with sharing class RegistrationController {
+public with sharing class SelfRegisterWithAccountController {
   @AuraEnabled(cacheable=true)
   public static Account getAccountByContactEmail(String email) {
     List<Contact> contacts = [

@@ -1,6 +1,6 @@
 import { LightningElement, track } from "lwc";
-import getAccountByContactEmail from "@salesforce/apex/RegistrationController.getAccountByContactEmail";
-import submitRegistration from "@salesforce/apex/RegistrationController.submitRegistration";
+import getAccountByContactEmail from "@salesforce/apex/SelfRegisterWithAccountController.getAccountByContactEmail";
+import submitRegistration from "@salesforce/apex/SelfRegisterWithAccountController.submitRegistration";
 import RegistrationFormOrganizationModal from "c/registrationFormOrganizationModal";
 
 export default class RegistrationForm extends LightningElement {
