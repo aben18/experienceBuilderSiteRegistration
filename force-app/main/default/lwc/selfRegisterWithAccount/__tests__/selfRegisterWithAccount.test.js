@@ -1,4 +1,4 @@
-import { createElement } from 'lwc';
+import { createElement } from 'lwc/';
 import SelfRegisterWithAccount from 'c/selfRegisterWithAccount';
 
 describe('c-self-register-with-account', () => {

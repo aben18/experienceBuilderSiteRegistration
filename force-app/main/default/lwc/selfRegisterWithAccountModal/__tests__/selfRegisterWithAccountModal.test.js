@@ -1,4 +1,4 @@
-import { createElement } from 'lwc';
+import { createElement } from 'lwc/';
 import SelfRegisterWithAccountModal from 'c/selfRegisterWithAccountModal';
 
 describe('c-self-register-with-account-modal', () => {
