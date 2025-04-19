@@ -5,7 +5,7 @@ import NAME_FIELD from "@salesforce/schema/Account.Name";
 
 export default class SelfRegisterWithAccountModal extends LightningModal {
   accountId;
-  organizationName = "";
+  accountName = "";
 
   handleChange(event) {
     const field = event.target.name;
@@ -35,7 +35,7 @@ export default class SelfRegisterWithAccountModal extends LightningModal {
     }
 
     const fields = {};
-    fields[NAME_FIELD.fieldApiName] = this.organizationName;
+    fields[NAME_FIELD.fieldApiName] = this.accountName;
     const recordInput = { apiName: ACCOUNT_OBJECT.objectApiName, fields };
     try {
       const account = await createRecord(recordInput);
