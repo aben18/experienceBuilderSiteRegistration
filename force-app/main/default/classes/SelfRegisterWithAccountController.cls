@@ -17,10 +17,17 @@ public with sharing class SelfRegisterWithAccountController {
 
   @AuraEnabled
   public static String submitRegistration(Contact contact) {
-    User existingUser = getUserByUsername(contact.Email);
-    Contact upsertedContact = upsertContactByEmail(contact);
-    User newUser = createUserFromContact(upsertedContact);
-    return newUser.Id;
+    throw new AuraHandledException('This method is not implemented yet.');
+    // User existingUser = getUserByUsername(contact.Email);
+    // if (existingUser != null) {
+    //   throw new AuraHandledException(
+    //     'A user with this email address already exists.'
+    //   );
+    // }
+
+    // Contact upsertedContact = upsertContactByEmail(contact);
+    // User newUser = createUserFromContact(upsertedContact);
+    // return newUser.Id;
   }
 
   public static User getUserByUsername(String username) {

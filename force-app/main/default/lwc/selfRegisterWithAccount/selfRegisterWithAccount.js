@@ -12,6 +12,7 @@ export default class SelfRegisterWithAccount extends LightningElement {
     accountId: ""
   };
   @track accountSearchComplete = false;
+  submitError = "";
 
   handleChange(event) {
     const field = event.target.name;
@@ -81,11 +82,16 @@ export default class SelfRegisterWithAccount extends LightningElement {
     }
 
     try {
+      console.log("Submitting registration:", this.contact.email);
       await submitRegistration(this.contact);
+      this.submitError = "";
+      this.handleRegistrationConfirmationRedirect();
     } catch (error) {
       console.error("Submit error:", error);
+      this.submitError = error.body.message
+        ? error.body.message
+        : "An unexpected error occurred. Please try again.";
     }
-    this.handleRegistrationConfirmationRedirect();
   }
 
   get isSubmitDisabled() {
