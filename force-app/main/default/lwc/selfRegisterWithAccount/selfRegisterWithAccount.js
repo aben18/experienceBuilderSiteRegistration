@@ -11,6 +11,7 @@ export default class SelfRegisterWithAccount extends LightningElement {
     email: "",
     accountId: ""
   };
+  @track accountSearchComplete = false;
 
   handleChange(event) {
     const field = event.target.name;
@@ -68,6 +69,10 @@ export default class SelfRegisterWithAccount extends LightningElement {
     if (result) {
       this.contact.accountId = result;
     }
+  }
+
+  get isCreateNewAccountDisabled() {
+    return this.contact.accountId || !this.accountSearchComplete;
   }
 
   async handleSubmit() {
