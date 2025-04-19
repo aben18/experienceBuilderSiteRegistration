@@ -70,7 +70,7 @@ export default class SelfRegisterWithAccount extends LightningElement {
     }
   }
 
-  get isSignUpDisabled() {
+  get isSubmitDisabled() {
     return (
       !this.contact.lastName || !this.contact.email || !this.contact.accountId
     );
