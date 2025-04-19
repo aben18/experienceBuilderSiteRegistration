@@ -70,12 +70,6 @@ export default class SelfRegisterWithAccount extends LightningElement {
     }
   }
 
-  get isSubmitDisabled() {
-    return (
-      !this.contact.lastName || !this.contact.email || !this.contact.accountId
-    );
-  }
-
   async handleSubmit() {
     if (!this.validateInputs()) {
       return;
@@ -87,6 +81,12 @@ export default class SelfRegisterWithAccount extends LightningElement {
       console.error("Submit error:", error);
     }
     this.handleRegistrationConfirmationRedirect();
+  }
+
+  get isSubmitDisabled() {
+    return (
+      !this.contact.lastName || !this.contact.email || !this.contact.accountId
+    );
   }
 
   handleRegistrationConfirmationRedirect() {
