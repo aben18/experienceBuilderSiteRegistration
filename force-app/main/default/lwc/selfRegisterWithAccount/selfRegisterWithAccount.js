@@ -16,7 +16,7 @@ export default class SelfRegisterWithAccount extends LightningElement {
     const field = event.target.name;
     this.contact[field] = event.target.value;
     if (field === "email") {
-      this.organizationSearchComplete = false;
+      this.accountSearchComplete = false;
     }
     if (field === "accountId") {
       this.contact.accountId = event.detail.recordId;
@@ -36,14 +36,14 @@ export default class SelfRegisterWithAccount extends LightningElement {
     return allValid;
   }
 
-  handleOrganizationFocus() {
-    if (!this.organizationSearchComplete) {
-      this.getOrganizationByContactEmail();
-      this.organizationSearchComplete = true;
+  handleAccountFocus() {
+    if (!this.accountSearchComplete) {
+      this.getAccountByContactEmail();
+      this.accountSearchComplete = true;
     }
   }
 
-  async getOrganizationByContactEmail() {
+  async getAccountByContactEmail() {
     if (!this.validateInputs()) {
       return;
     }
@@ -60,9 +60,9 @@ export default class SelfRegisterWithAccount extends LightningElement {
     }
   }
 
-  async handleCreateNewOrganization() {
+  async handleCreateNewAccount() {
     const result = await SelfRegisterWithAccountModal.open({
-      description: "Create a new organization",
+      description: "Create a new account",
       size: "small"
     });
     if (result) {

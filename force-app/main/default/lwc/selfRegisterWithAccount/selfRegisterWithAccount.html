@@ -21,22 +21,22 @@
           required
         ></lightning-input>
         <lightning-record-picker
-          label="Organization"
-          placeholder="Search Organizations..."
+          label="Account"
+          placeholder="Search Account..."
           object-api-name="Account"
           value={contact.accountId}
           name="accountId"
-          onfocus={handleOrganizationFocus}
+          onfocus={handleAccountFocus}
           onchange={handleChange}
           required
         ></lightning-record-picker>
         <div class="slds-text-align_center">
           <p>
-            Can't find your organization?&nbsp;
+            Can't find your account?&nbsp;
             <lightning-button
               variant="base"
-              label="Create a new one."
-              onclick={handleCreateNewOrganization}
+              label="Create new."
+              onclick={handleCreateNewAccount}
             ></lightning-button>
           </p>
         </div>
