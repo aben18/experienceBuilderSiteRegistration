@@ -1,7 +1,7 @@
 import { LightningElement, track } from "lwc";
 import getAccountByContactEmail from "@salesforce/apex/SelfRegisterWithAccountController.getAccountByContactEmail";
 import submitRegistration from "@salesforce/apex/SelfRegisterWithAccountController.submitRegistration";
-import RegistrationFormOrganizationModal from "c/registrationFormOrganizationModal";
+import SelfRegisterWithAccountModal from "c/selfRegisterWithAccountModal";
 
 export default class RegistrationForm extends LightningElement {
   // Track is required to make nested properties reactive
@@ -61,7 +61,7 @@ export default class RegistrationForm extends LightningElement {
   }
 
   async handleCreateNewOrganization() {
-    const result = await RegistrationFormOrganizationModal.open({
+    const result = await SelfRegisterWithAccountModal.open({
       description: "Create a new organization",
       size: "small"
     });

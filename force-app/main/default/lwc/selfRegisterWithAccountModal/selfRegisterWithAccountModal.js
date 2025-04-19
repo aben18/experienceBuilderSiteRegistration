@@ -3,7 +3,7 @@ import LightningModal from "lightning/modal";
 import ACCOUNT_OBJECT from "@salesforce/schema/Account";
 import NAME_FIELD from "@salesforce/schema/Account.Name";
 
-export default class RegistrationFormOrganizationModal extends LightningModal {
+export default class SelfRegisterWithAccountModal extends LightningModal {
   accountId;
   organizationName = "";
 
