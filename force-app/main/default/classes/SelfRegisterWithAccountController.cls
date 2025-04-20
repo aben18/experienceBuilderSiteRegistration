@@ -16,18 +16,19 @@ public with sharing class SelfRegisterWithAccountController {
   }
 
   @AuraEnabled
-  public static String submitRegistration(Contact contact) {
-    throw new AuraHandledException('This method is not implemented yet.');
-    // User existingUser = getUserByUsername(contact.Email);
-    // if (existingUser != null) {
-    //   throw new AuraHandledException(
-    //     'A user with this email address already exists.'
-    //   );
-    // }
+  public static void submitRegistration(Contact contact) {
+    if (String.isBlank(contact.Email)) {
+      throw new AuraHandledException('Email is required.');
+    }
+    User existingUser = getUserByUsername(contact.Email);
+    if (existingUser != null) {
+      throw new AuraHandledException(
+        'A user with this email address already exists.'
+      );
+    }
 
     // Contact upsertedContact = upsertContactByEmail(contact);
     // User newUser = createUserFromContact(upsertedContact);
-    // return newUser.Id;
   }
 
   public static User getUserByUsername(String username) {
