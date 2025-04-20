@@ -33,8 +33,8 @@ public with sharing class SelfRegisterWithAccountController {
       );
     }
 
-    // Contact upsertedContact = upsertContactByEmail(contact);
-    // User newUser = createUserFromContact(upsertedContact);
+    Contact upsertedContact = upsertContactByEmail(contact);
+    createUserFromContact(upsertedContact);
   }
 
   public static User getUserByUsername(String username) {
@@ -52,6 +52,13 @@ public with sharing class SelfRegisterWithAccountController {
   }
 
   public static Contact upsertContactByEmail(Contact contact) {
+    Contact newContact = new Contact(
+      FirstName = contact.FirstName,
+      LastName = contact.LastName,
+      Email = contact.Email,
+      AccountId = contact.AccountId
+    );
+
     List<Contact> contacts = [
       SELECT Id, AccountId
       FROM Contact
@@ -59,17 +66,29 @@ public with sharing class SelfRegisterWithAccountController {
       WITH SECURITY_ENFORCED
       LIMIT 1
     ];
-    Contact existingContact;
+
     if (!contacts.isEmpty()) {
-      existingContact = contacts[0];
-    }
-    if (existingContact == null) {
-      if (!Schema.sObjectType.Contact.isCreateable()) {
-        throw new System.NoAccessException();
+      newContact.Id = contacts[0].Id;
+      if (contacts[0].AccountId != newContact.AccountId) {
+        AccountContactRelation acr = new AccountContactRelation(
+          AccountId = newContact.AccountId,
+          ContactId = newContact.Id
+        );
+        if (!Schema.sObjectType.AccountContactRelation.isCreateable()) {
+          throw new System.NoAccessException();
+        }
+        insert acr;
       }
-      insert contact;
     }
-    return existingContact;
+
+    if (!Schema.sObjectType.Contact.isCreateable()) {
+      throw new System.NoAccessException();
+    }
+    if (!Schema.sObjectType.Contact.isUpdateable()) {
+      throw new System.NoAccessException();
+    }
+    upsert newContact;
+    return newContact;
   }
 
   public static User createUserFromContact(Contact contact) {
@@ -81,10 +100,7 @@ public with sharing class SelfRegisterWithAccountController {
       LastName = contact.LastName,
       Email = contact.Email,
       Username = contact.Email,
-      Alias = (contact.FirstName.substring(0, 1) +
-        contact.LastName.substring(0, 1) +
-        String.valueOf(Math.round(Math.random() * 10000)))
-        .substring(0, 5),
+      Alias = createAlias(contact.FirstName, contact.LastName),
       TimeZoneSidKey = 'America/New_York',
       LocaleSidKey = 'en_US',
       EmailEncodingKey = 'UTF-8',
@@ -92,7 +108,7 @@ public with sharing class SelfRegisterWithAccountController {
       ProfileId = [
         SELECT Id
         FROM Profile
-        WHERE Name = 'Standard User'
+        WHERE Name = 'Custom Customer Community User'
         LIMIT 1
       ]
       .Id,
@@ -104,6 +120,15 @@ public with sharing class SelfRegisterWithAccountController {
     }
     insert newUser;
     return newUser;
+  }
+
+  public static String createAlias(String firstName, String lastName) {
+    String alias = '';
+    if (!String.isBlank(firstName)) {
+      alias += firstName.substring(0, Math.min(1, firstName.length()));
+    }
+    alias += lastName.substring(0, Math.min(4, lastName.length()));
+    return alias;
   }
 
   public class ContactMatchResult {
