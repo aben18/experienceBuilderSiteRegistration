@@ -17,8 +17,14 @@ public with sharing class SelfRegisterWithAccountController {
 
   @AuraEnabled
   public static void submitRegistration(Contact contact) {
+    if (String.isBlank(contact.LastName)) {
+      throw new AuraHandledException('Last Name is required.');
+    }
     if (String.isBlank(contact.Email)) {
       throw new AuraHandledException('Email is required.');
+    }
+    if (contact.AccountId == null) {
+      throw new AuraHandledException('Account is required.');
     }
     User existingUser = getUserByUsername(contact.Email);
     if (existingUser != null) {
