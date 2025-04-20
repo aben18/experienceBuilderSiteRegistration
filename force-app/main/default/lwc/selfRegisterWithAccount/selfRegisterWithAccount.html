@@ -4,19 +4,19 @@
       <div class="slds-card__body slds-card__body_inner">
         <lightning-input
           label="First Name"
-          name="firstName"
+          name="FirstName"
           onchange={handleChange}
         ></lightning-input>
         <lightning-input
           label="Last Name"
-          name="lastName"
+          name="LastName"
           onchange={handleChange}
           required
         ></lightning-input>
         <lightning-input
           type="email"
           label="Email"
-          name="email"
+          name="Email"
           onchange={handleChange}
           required
         ></lightning-input>
@@ -24,8 +24,8 @@
           label="Account"
           placeholder="Search Account..."
           object-api-name="Account"
-          value={contact.accountId}
-          name="accountId"
+          value={contact.AccountId}
+          name="AccountId"
           onfocus={handleAccountFocus}
           onchange={handleChange}
           required

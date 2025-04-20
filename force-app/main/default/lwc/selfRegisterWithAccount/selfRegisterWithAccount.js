@@ -6,10 +6,10 @@ import SelfRegisterWithAccountModal from "c/selfRegisterWithAccountModal";
 export default class SelfRegisterWithAccount extends LightningElement {
   // Track is required to make nested properties reactive
   @track contact = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    accountId: ""
+    FirstName: "",
+    LastName: "",
+    Email: "",
+    AccountId: ""
   };
   @track accountSearchComplete = false;
   submitError = "";
@@ -17,11 +17,11 @@ export default class SelfRegisterWithAccount extends LightningElement {
   handleChange(event) {
     const field = event.target.name;
     this.contact[field] = event.target.value;
-    if (field === "email") {
+    if (field === "Email") {
       this.accountSearchComplete = false;
     }
-    if (field === "accountId") {
-      this.contact.accountId = event.detail.recordId;
+    if (field === "AccountId") {
+      this.contact.AccountId = event.detail.recordId;
     }
   }
 
@@ -52,10 +52,10 @@ export default class SelfRegisterWithAccount extends LightningElement {
 
     try {
       const result = await getAccountByContactEmail({
-        email: this.contact.email
+        email: this.contact.Email
       });
       if (result) {
-        this.contact.accountId = result.Id;
+        this.contact.AccountId = result.Id;
       }
     } catch (error) {
       console.error("Contact match error:", error);
@@ -68,12 +68,12 @@ export default class SelfRegisterWithAccount extends LightningElement {
       size: "small"
     });
     if (result) {
-      this.contact.accountId = result;
+      this.contact.AccountId = result;
     }
   }
 
   get isCreateNewAccountDisabled() {
-    return this.contact.accountId || !this.accountSearchComplete;
+    return this.contact.AccountId || !this.accountSearchComplete;
   }
 
   async handleSubmit() {
@@ -82,8 +82,7 @@ export default class SelfRegisterWithAccount extends LightningElement {
     }
 
     try {
-      console.log("Submitting registration:", this.contact.email);
-      await submitRegistration(this.contact);
+      await submitRegistration({ contact: this.contact });
       this.submitError = "";
       this.handleRegistrationConfirmationRedirect();
     } catch (error) {
@@ -96,7 +95,7 @@ export default class SelfRegisterWithAccount extends LightningElement {
 
   get isSubmitDisabled() {
     return (
-      !this.contact.lastName || !this.contact.email || !this.contact.accountId
+      !this.contact.LastName || !this.contact.Email || !this.contact.AccountId
     );
   }
 
