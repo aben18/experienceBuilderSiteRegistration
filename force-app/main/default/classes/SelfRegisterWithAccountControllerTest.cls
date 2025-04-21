@@ -1,12 +1,73 @@
 @isTest
 private class SelfRegisterWithAccountControllerTest {
-  @testSetup static void makeData() {
+  @testSetup
+  static void makeData() {
     Account testAccount = new Account(Name = 'Test Account');
     insert testAccount;
+
+    Contact testContact = new Contact(
+      FirstName = 'Test',
+      LastName = 'Contact',
+      Email = 'test+' +
+        String.valueOf(Math.random()).substring(2, 8) +
+        '@example.com',
+      AccountId = testAccount.Id
+    );
+    insert testContact;
   }
 
   @IsTest
-  static void submitNewContactRegistration() {
+  static void testGetAccountByContactEmail() {
+    Contact testContact = [
+      SELECT Id, Email
+      FROM Contact
+      WHERE Email LIKE 'test+%'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    Account account = SelfRegisterWithAccountController.getAccountByContactEmail(
+      testContact.Email
+    );
+    Test.stopTest();
+
+    Account testAccount = [
+      SELECT Id
+      FROM Account
+      WHERE Name = 'Test Account'
+      LIMIT 1
+    ];
+
+    System.assertNotEquals(null, account, 'Account should be found by email.');
+    System.assertEquals(
+      testAccount.Id,
+      account.Id,
+      'Returned account should match the inserted account.'
+    );
+  }
+
+  @IsTest
+  static void testGetAccountByContactEmailNewContact() {
+    String testEmail =
+      'newtest+' +
+      String.valueOf(Math.random()).substring(2, 8) +
+      '@example.com';
+
+    Test.startTest();
+    Account account = SelfRegisterWithAccountController.getAccountByContactEmail(
+      testEmail
+    );
+    Test.stopTest();
+
+    System.assertEquals(
+      null,
+      account,
+      'No account should be found for new email.'
+    );
+  }
+
+  @IsTest
+  static void testSubmitRegistrationWithNewContact() {
     Account testAccount = [
       SELECT Id
       FROM Account
@@ -16,7 +77,9 @@ private class SelfRegisterWithAccountControllerTest {
 
     Contact testContact = new Contact(
       LastName = 'Test',
-      Email = 'test+' + String.valueOf(Math.random()).substring(2, 8) + '@example.com',
+      Email = 'test+' +
+        String.valueOf(Math.random()).substring(2, 8) +
+        '@example.com',
       AccountId = testAccount.Id
     );
 
