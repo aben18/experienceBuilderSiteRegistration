@@ -4,9 +4,18 @@ private class SelfRegisterWithAccountControllerTest {
   static void makeData() {
     Account testAccount = new Account(Name = 'Test Account');
     insert testAccount;
+  }
 
+  @IsTest
+  static void testGetAccountByContactEmail() {
+    Account testAccount = [
+      SELECT Id
+      FROM Account
+      WHERE Name = 'Test Account'
+      LIMIT 1
+    ];
     Contact testContact = new Contact(
-      FirstName = 'Test',
+      FirstName = 'Test Get Account By Email',
       LastName = 'Contact',
       Email = 'test+' +
         String.valueOf(Math.random()).substring(2, 8) +
@@ -14,29 +23,12 @@ private class SelfRegisterWithAccountControllerTest {
       AccountId = testAccount.Id
     );
     insert testContact;
-  }
-
-  @IsTest
-  static void testGetAccountByContactEmail() {
-    Contact testContact = [
-      SELECT Id, Email
-      FROM Contact
-      WHERE Email LIKE 'test+%'
-      LIMIT 1
-    ];
 
     Test.startTest();
     Account account = SelfRegisterWithAccountController.getAccountByContactEmail(
       testContact.Email
     );
     Test.stopTest();
-
-    Account testAccount = [
-      SELECT Id
-      FROM Account
-      WHERE Name = 'Test Account'
-      LIMIT 1
-    ];
 
     System.assertNotEquals(null, account, 'Account should be found by email.');
     System.assertEquals(
