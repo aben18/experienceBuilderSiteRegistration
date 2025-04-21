@@ -4,6 +4,16 @@ private class SelfRegisterWithAccountControllerTest {
   static void makeData() {
     Account testAccount = new Account(Name = 'Test Account');
     insert testAccount;
+
+    Contact testContact = new Contact(
+      FirstName = 'Test',
+      LastName = 'Contact',
+      Email = 'test+' +
+        String.valueOf(Math.random()).substring(2, 8) +
+        '@example.com',
+      AccountId = testAccount.Id
+    );
+    insert testContact;
   }
 
   @IsTest
@@ -110,6 +120,70 @@ private class SelfRegisterWithAccountControllerTest {
       testContact.AccountId,
       createdUser.AccountId,
       'User\'s account should be the same as Contact\'s account.'
+    );
+  }
+
+  @IsTest
+  static void testSubmitRegistrationWithExistingContactWithNewAccount() {
+    Contact testContact = [
+      SELECT Id, FirstName, LastName, Email, AccountId
+      FROM Contact
+      WHERE Email LIKE 'test+%'
+      LIMIT 1
+    ];
+
+    Account newAccount = new Account(Name = 'Test New Account');
+    insert newAccount;
+
+    Contact testUpdatedContact = new Contact(
+      FirstName = testContact.FirstName + ' Updated',
+      LastName = testContact.LastName + ' Updated',
+      Email = testContact.Email,
+      AccountId = newAccount.Id
+    );
+
+    Test.startTest();
+    SelfRegisterWithAccountController.submitRegistration(testUpdatedContact);
+    Test.stopTest();
+
+    Contact updatedContact = [
+      SELECT Id, FirstName, LastName, Email, AccountId
+      FROM Contact
+      WHERE Id = :testContact.Id
+      LIMIT 1
+    ];
+
+    AccountContactRelation createdAccountContactRelation = [
+      SELECT Id
+      FROM AccountContactRelation
+      WHERE ContactId = :updatedContact.Id AND AccountId = :newAccount.Id
+      LIMIT 1
+    ];
+
+    System.assertEquals(
+      'Test Updated',
+      updatedContact.FirstName,
+      'First name should be updated.'
+    );
+    System.assertEquals(
+      'Contact Updated',
+      updatedContact.LastName,
+      'Last name should be updated.'
+    );
+    System.assertEquals(
+      testContact.Email,
+      updatedContact.Email,
+      'Email should remain the same.'
+    );
+    System.assertEquals(
+      testContact.AccountId,
+      updatedContact.AccountId,
+      'Account should not be updated.'
+    );
+    System.assertEquals(
+      true,
+      createdAccountContactRelation != null,
+      'AccountContactRelation should be created.'
     );
   }
 }

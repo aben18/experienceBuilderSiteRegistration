@@ -74,6 +74,7 @@ public with sharing class SelfRegisterWithAccountController {
           AccountId = newContact.AccountId,
           ContactId = newContact.Id
         );
+        newContact.AccountId = contacts[0].AccountId;
         if (!Schema.sObjectType.AccountContactRelation.isCreateable()) {
           throw new System.NoAccessException();
         }
