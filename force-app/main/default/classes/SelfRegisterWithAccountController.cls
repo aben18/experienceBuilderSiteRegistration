@@ -51,35 +51,37 @@ public with sharing class SelfRegisterWithAccountController {
     return users[0];
   }
 
-  public static Contact upsertContactByEmail(Contact contact) {
-    Contact newContact = new Contact(
-      FirstName = contact.FirstName,
-      LastName = contact.LastName,
-      Email = contact.Email,
-      AccountId = contact.AccountId
-    );
-
-    List<Contact> contacts = [
+  public static Contact upsertContactByEmail(Contact newContact) {
+    Contact existingContact = [
       SELECT Id, AccountId
       FROM Contact
-      WHERE Email = :contact.Email
+      WHERE Email = :newContact.Email
       WITH SECURITY_ENFORCED
       LIMIT 1
     ];
 
-    if (!contacts.isEmpty()) {
-      newContact.Id = contacts[0].Id;
-      if (contacts[0].AccountId != newContact.AccountId) {
-        AccountContactRelation acr = new AccountContactRelation(
-          AccountId = newContact.AccountId,
-          ContactId = newContact.Id
-        );
-        newContact.AccountId = contacts[0].AccountId;
-        if (!Schema.sObjectType.AccountContactRelation.isCreateable()) {
-          throw new System.NoAccessException();
-        }
-        insert acr;
+    Contact upsertContact = new Contact(
+      Id = (existingContact != null) ? existingContact.Id : null,
+      FirstName = newContact.FirstName,
+      LastName = newContact.LastName,
+      Email = newContact.Email,
+      AccountId = (existingContact.AccountId != null)
+        ? existingContact.AccountId
+        : newContact.AccountId
+    );
+
+    if (
+      existingContact != null &&
+      existingContact.AccountId != newContact.AccountId
+    ) {
+      AccountContactRelation acr = new AccountContactRelation(
+        AccountId = newContact.AccountId,
+        ContactId = existingContact.Id
+      );
+      if (!Schema.sObjectType.AccountContactRelation.isCreateable()) {
+        throw new System.NoAccessException();
       }
+      insert acr;
     }
 
     if (!Schema.sObjectType.Contact.isCreateable()) {
@@ -88,8 +90,8 @@ public with sharing class SelfRegisterWithAccountController {
     if (!Schema.sObjectType.Contact.isUpdateable()) {
       throw new System.NoAccessException();
     }
-    upsert newContact;
-    return newContact;
+    upsert upsertContact;
+    return upsertContact;
   }
 
   public static User createUserFromContact(Contact contact) {
