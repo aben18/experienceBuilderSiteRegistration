@@ -35,6 +35,7 @@
             <lightning-button
               variant="base"
               label="Create new."
+              name="createNewAccount"
               onclick={handleCreateNewAccount}
               disabled={isCreateNewAccountDisabled}
             ></lightning-button>
@@ -44,6 +45,7 @@
           <lightning-button
             variant="brand"
             label="Sign Up"
+            name="submit"
             onclick={handleSubmit}
             stretch
             disabled={isSubmitDisabled}
@@ -56,6 +58,7 @@
           <lightning-button
             variant="base"
             label="Already have a login?"
+            name="login"
             onclick={handleLoginRedirect}
           ></lightning-button>
         </div>
