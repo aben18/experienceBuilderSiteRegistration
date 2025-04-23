@@ -16,11 +16,15 @@ export default class SelfRegisterWithAccount extends LightningElement {
 
   handleChange(event) {
     const field = event.target.name;
-    this.contact[field] = event.target.value;
-    if (field === "Email") {
-      this.accountSearchComplete = false;
-    }
-    if (field === "AccountId") {
+    if (field) {
+      this.contact[field] = event.target.value;
+      if (field === "Email") {
+        this.accountSearchComplete = false;
+      }
+    } else if (
+      event.target.tagName === "LIGHTNING-RECORD-PICKER" &&
+      event.target.objectApiName === "Account"
+    ) {
       this.contact.AccountId = event.detail.recordId;
     }
   }

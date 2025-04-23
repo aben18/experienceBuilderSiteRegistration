@@ -25,7 +25,6 @@
           placeholder="Search Account..."
           object-api-name="Account"
           value={contact.AccountId}
-          name="AccountId"
           onfocus={handleAccountFocus}
           onchange={handleChange}
           required
@@ -49,9 +48,9 @@
             stretch
             disabled={isSubmitDisabled}
           ></lightning-button>
-            <div class="slds-text-color_destructive slds-m-top_small">
-              <p>{submitError}</p>
-            </div>
+          <div class="slds-text-color_destructive slds-m-top_small">
+            <p>{submitError}</p>
+          </div>
         </div>
         <div class="slds-m-vertical_medium slds-text-align_center">
           <lightning-button
