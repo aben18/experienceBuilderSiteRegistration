@@ -100,6 +100,7 @@ describe("c-self-register-with-account", () => {
     const createAccountButton = Array.from(buttons).find(
       (button) => button.name === "createNewAccount"
     );
+    
     return Promise.resolve().then(() => {
       expect(createAccountButton.disabled).toBe(false);
     });
