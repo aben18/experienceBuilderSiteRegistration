@@ -28,7 +28,9 @@ describe("c-self-register-with-account", () => {
     );
     expect(emailInput).not.toBeNull();
 
-    const recordPickers = element.shadowRoot.querySelectorAll("lightning-record-picker");
+    const recordPickers = element.shadowRoot.querySelectorAll(
+      "lightning-record-picker"
+    );
     const accountPicker = Array.from(recordPickers).find(
       (picker) => picker.objectApiName === "Account"
     );
