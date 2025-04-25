@@ -1,5 +1,21 @@
 import { createElement } from "@lwc/engine-dom";
 import SelfRegisterWithAccount from "c/selfRegisterWithAccount";
+import submitRegistration from "@salesforce/apex/SelfRegisterWithAccountController.submitRegistration";
+
+jest.mock(
+  "@salesforce/apex/SelfRegisterWithAccountController.submitRegistration",
+  () => ({
+    default: jest.fn()
+  }),
+  { virtual: true }
+);
+
+const APEX_SUBMIT_EXISTING_USER_ERROR = {
+  body: { message: "A user with this email address already exists." },
+  ok: false,
+  status: 500,
+  statusText: "Server Error"
+};
 
 describe("c-self-register-with-account", () => {
   afterEach(() => {
@@ -125,6 +141,39 @@ describe("c-self-register-with-account", () => {
 
     return Promise.resolve().then(() => {
       expect(submitButton.disabled).toBe(false);
+    });
+  });
+
+  it("ensures error displayed when user with email exists", async () => {
+    submitRegistration.mockRejectedValue(APEX_SUBMIT_EXISTING_USER_ERROR);
+
+    const element = createElement("c-self-register-with-account", {
+      is: SelfRegisterWithAccount
+    });
+    document.body.appendChild(element);
+
+    const inputs = element.shadowRoot.querySelectorAll("lightning-input");
+    inputs.forEach((input) => {
+      input.reportValidity = jest.fn().mockReturnValue(true);
+    });
+
+    const buttons = element.shadowRoot.querySelectorAll("lightning-button");
+    const submitButton = Array.from(buttons).find(
+      (button) => button.name === "submit"
+    );
+    submitButton.dispatchEvent(new CustomEvent("click"));
+
+    await Promise.resolve();
+
+    return Promise.resolve().then(() => {
+      const errorParagraph = element.shadowRoot.querySelector(
+        "div.slds-text-color_destructive p"
+      );
+
+      expect(errorParagraph).not.toBeNull();
+      expect(errorParagraph.textContent).toBe(
+        "A user with this email address already exists."
+      );
     });
   });
 });
