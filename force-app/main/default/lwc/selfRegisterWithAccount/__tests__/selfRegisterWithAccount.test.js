@@ -8,7 +8,7 @@ describe("c-self-register-with-account", () => {
     }
   });
 
-  it("renders all required form elements", () => {
+  it("renders all required form elements in initial state", () => {
     const element = createElement("c-self-register-with-account", {
       is: SelfRegisterWithAccount
     });
@@ -41,10 +41,12 @@ describe("c-self-register-with-account", () => {
       (button) => button.name === "createNewAccount"
     );
     expect(createAccountButton).not.toBeNull();
+    expect(createAccountButton.disabled).toBe(true);
     const submitButton = Array.from(buttons).find(
       (button) => button.name === "submit"
     );
     expect(submitButton).not.toBeNull();
+    expect(submitButton.disabled).toBe(true);
     const loginButton = Array.from(buttons).find(
       (button) => button.name === "login"
     );
