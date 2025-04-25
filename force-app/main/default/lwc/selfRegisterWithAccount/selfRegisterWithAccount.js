@@ -12,7 +12,7 @@ export default class SelfRegisterWithAccount extends LightningElement {
     AccountId: ""
   };
   @track accountSearchComplete = false;
-  submitError = "";
+  @track submitError = "";
 
   handleChange(event) {
     const field = event.target.name;
