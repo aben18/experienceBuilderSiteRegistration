@@ -87,4 +87,44 @@ describe("c-self-register-with-account", () => {
       expect(createAccountButton.disabled).toBe(false);
     });
   });
+
+  it("enables the submit button when all required fields are filled", () => {
+    const element = createElement("c-self-register-with-account", {
+      is: SelfRegisterWithAccount
+    });
+    document.body.appendChild(element);
+
+    const inputs = element.shadowRoot.querySelectorAll("lightning-input");
+    const lastNameInput = Array.from(inputs).find(
+      (input) => input.name === "LastName"
+    );
+    lastNameInput.value = "Doe";
+    lastNameInput.dispatchEvent(new CustomEvent("change"));
+    const emailInput = Array.from(inputs).find(
+      (input) => input.name === "Email"
+    );
+    emailInput.value = "john.doe@example.com";
+    emailInput.dispatchEvent(new CustomEvent("change"));
+
+    const recordPickers = element.shadowRoot.querySelectorAll(
+      "lightning-record-picker"
+    );
+    const accountPicker = Array.from(recordPickers).find(
+      (picker) => picker.objectApiName === "Account"
+    );
+    accountPicker.dispatchEvent(
+      new CustomEvent("change", {
+        detail: { recordId: "001XXXXXXXX" }
+      })
+    );
+
+    const buttons = element.shadowRoot.querySelectorAll("lightning-button");
+    const submitButton = Array.from(buttons).find(
+      (button) => button.name === "submit"
+    );
+
+    return Promise.resolve().then(() => {
+      expect(submitButton.disabled).toBe(false);
+    });
+  });
 });
