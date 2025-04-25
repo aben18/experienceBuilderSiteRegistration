@@ -91,8 +91,8 @@ export default class SelfRegisterWithAccount extends LightningElement {
     }
 
     try {
-      await submitRegistration({ contact: this.contact });
       this.submitError = "";
+      await submitRegistration({ contact: this.contact });
       this.handleRegistrationConfirmationRedirect();
     } catch (error) {
       this.submitError = error.body.message
