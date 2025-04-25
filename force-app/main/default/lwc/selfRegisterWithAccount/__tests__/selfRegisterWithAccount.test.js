@@ -69,7 +69,7 @@ describe("c-self-register-with-account", () => {
     expect(loginButton).not.toBeNull();
   });
 
-  it("enables the create account button when all required fields are filled", () => {
+  it("enables the create account button when all required fields are filled", async () => {
     const element = createElement("c-self-register-with-account", {
       is: SelfRegisterWithAccount
     });
@@ -104,7 +104,7 @@ describe("c-self-register-with-account", () => {
     });
   });
 
-  it("enables the submit button when all required fields are filled", () => {
+  it("enables the submit button when all required fields are filled", async () => {
     const element = createElement("c-self-register-with-account", {
       is: SelfRegisterWithAccount
     });
@@ -174,6 +174,34 @@ describe("c-self-register-with-account", () => {
       expect(errorParagraph.textContent).toBe(
         "A user with this email address already exists."
       );
+    });
+  });
+
+  it("redirect after successful registration", async () => {
+    submitRegistration.mockResolvedValue({});
+
+    const element = createElement("c-self-register-with-account", {
+      is: SelfRegisterWithAccount
+    });
+    document.body.appendChild(element);
+
+    const inputs = element.shadowRoot.querySelectorAll("lightning-input");
+    inputs.forEach((input) => {
+      input.reportValidity = jest.fn().mockReturnValue(true);
+    });
+
+    delete window.location;
+    window.location = { href: "" };
+
+    const buttons = element.shadowRoot.querySelectorAll("lightning-button");
+    const submitButton = Array.from(buttons).find(
+      (button) => button.name === "submit"
+    );
+    submitButton.dispatchEvent(new CustomEvent("click"));
+
+    return Promise.resolve().then(() => {
+      expect(submitRegistration).toHaveBeenCalled();
+      expect(window.location.href).not.toBe("");
     });
   });
 });
