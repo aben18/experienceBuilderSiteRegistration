@@ -77,7 +77,7 @@ export default class SelfRegisterWithAccount extends LightningElement {
   }
 
   get isCreateNewAccountDisabled() {
-    return this.contact.AccountId || !this.accountSearchComplete;
+    return !!this.contact.AccountId || !this.accountSearchComplete;
   }
 
   async handleSubmit() {
