@@ -24,6 +24,8 @@ describe("c-self-register-with-account", () => {
     }
   });
 
+  const flushPromises = () => new Promise((resolve) => process.nextTick(resolve));
+
   it("renders all required form elements in initial state", () => {
     const element = createElement("c-self-register-with-account", {
       is: SelfRegisterWithAccount
@@ -100,10 +102,9 @@ describe("c-self-register-with-account", () => {
     const createAccountButton = Array.from(buttons).find(
       (button) => button.name === "createNewAccount"
     );
-    
-    return Promise.resolve().then(() => {
-      expect(createAccountButton.disabled).toBe(false);
-    });
+
+    await flushPromises();
+    expect(createAccountButton.disabled).toBe(false);
   });
 
   it("enables the submit button when all required fields are filled", async () => {
@@ -141,9 +142,8 @@ describe("c-self-register-with-account", () => {
       (button) => button.name === "submit"
     );
 
-    return Promise.resolve().then(() => {
-      expect(submitButton.disabled).toBe(false);
-    });
+    await flushPromises();
+    expect(submitButton.disabled).toBe(false);
   });
 
   it("ensures error displayed when user with email exists", async () => {
@@ -165,18 +165,15 @@ describe("c-self-register-with-account", () => {
     );
     submitButton.dispatchEvent(new CustomEvent("click"));
 
-    await Promise.resolve();
+    await flushPromises();
+    const errorParagraph = element.shadowRoot.querySelector(
+      "div.slds-text-color_destructive p"
+    );
 
-    return Promise.resolve().then(() => {
-      const errorParagraph = element.shadowRoot.querySelector(
-        "div.slds-text-color_destructive p"
-      );
-
-      expect(errorParagraph).not.toBeNull();
-      expect(errorParagraph.textContent).toBe(
-        "A user with this email address already exists."
-      );
-    });
+    expect(errorParagraph).not.toBeNull();
+    expect(errorParagraph.textContent).toBe(
+      "A user with this email address already exists."
+    );
   });
 
   it("redirect after successful registration", async () => {
@@ -201,9 +198,8 @@ describe("c-self-register-with-account", () => {
     );
     submitButton.dispatchEvent(new CustomEvent("click"));
 
-    return Promise.resolve().then(() => {
-      expect(submitRegistration).toHaveBeenCalled();
-      expect(window.location.href).not.toBe("");
-    });
+    await flushPromises();
+    expect(submitRegistration).toHaveBeenCalled();
+    expect(window.location.href).not.toBe("");
   });
 });
