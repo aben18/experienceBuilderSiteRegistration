@@ -95,7 +95,6 @@ export default class SelfRegisterWithAccount extends LightningElement {
       this.submitError = "";
       this.handleRegistrationConfirmationRedirect();
     } catch (error) {
-      console.error("Submit error:", error);
       this.submitError = error.body.message
         ? error.body.message
         : "An unexpected error occurred. Please try again.";
