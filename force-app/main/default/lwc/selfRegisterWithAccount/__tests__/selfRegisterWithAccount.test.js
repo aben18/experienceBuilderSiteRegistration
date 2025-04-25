@@ -34,15 +34,12 @@ describe("c-self-register-with-account", () => {
     const firstNameInput = Array.from(inputs).find(
       (input) => input.name === "FirstName"
     );
-    expect(firstNameInput).not.toBeNull();
     const lastNameInput = Array.from(inputs).find(
       (input) => input.name === "LastName"
     );
-    expect(lastNameInput).not.toBeNull();
     const emailInput = Array.from(inputs).find(
       (input) => input.name === "Email"
     );
-    expect(emailInput).not.toBeNull();
 
     const recordPickers = element.shadowRoot.querySelectorAll(
       "lightning-record-picker"
@@ -50,22 +47,26 @@ describe("c-self-register-with-account", () => {
     const accountPicker = Array.from(recordPickers).find(
       (picker) => picker.objectApiName === "Account"
     );
-    expect(accountPicker).not.toBeNull();
 
     const buttons = element.shadowRoot.querySelectorAll("lightning-button");
     const createAccountButton = Array.from(buttons).find(
       (button) => button.name === "createNewAccount"
     );
-    expect(createAccountButton).not.toBeNull();
-    expect(createAccountButton.disabled).toBe(true);
     const submitButton = Array.from(buttons).find(
       (button) => button.name === "submit"
     );
-    expect(submitButton).not.toBeNull();
-    expect(submitButton.disabled).toBe(true);
     const loginButton = Array.from(buttons).find(
       (button) => button.name === "login"
     );
+
+    expect(firstNameInput).not.toBeNull();
+    expect(lastNameInput).not.toBeNull();
+    expect(emailInput).not.toBeNull();
+    expect(accountPicker).not.toBeNull();
+    expect(createAccountButton).not.toBeNull();
+    expect(createAccountButton.disabled).toBe(true);
+    expect(submitButton).not.toBeNull();
+    expect(submitButton.disabled).toBe(true);
     expect(loginButton).not.toBeNull();
   });
 
