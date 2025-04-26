@@ -32,34 +32,31 @@ describe("c-self-register-with-account", () => {
     });
     document.body.appendChild(element);
 
-    const inputs = element.shadowRoot.querySelectorAll("lightning-input");
-    const firstNameInput = Array.from(inputs).find(
-      (input) => input.name === "FirstName"
-    );
-    const lastNameInput = Array.from(inputs).find(
-      (input) => input.name === "LastName"
-    );
-    const emailInput = Array.from(inputs).find(
-      (input) => input.name === "Email"
-    );
+    const inputs = Array.from(element.shadowRoot.querySelectorAll("lightning-input"))
+      .reduce((map, input) => {
+        map[input.name] = input;
+        return map;
+      }, {});
+    const firstNameInput = inputs.FirstName;
+    const lastNameInput = inputs.LastName;
+    const emailInput = inputs.Email;
 
-    const recordPickers = element.shadowRoot.querySelectorAll(
+    const recordPickers = Array.from(element.shadowRoot.querySelectorAll(
       "lightning-record-picker"
-    );
-    const accountPicker = Array.from(recordPickers).find(
-      (picker) => picker.objectApiName === "Account"
-    );
+    )).reduce((map, picker) => {
+      map[picker.objectApiName] = picker;
+      return map;
+    }, {});
+    const accountPicker = recordPickers.Account;
 
-    const buttons = element.shadowRoot.querySelectorAll("lightning-button");
-    const createAccountButton = Array.from(buttons).find(
-      (button) => button.name === "createNewAccount"
-    );
-    const submitButton = Array.from(buttons).find(
-      (button) => button.name === "submit"
-    );
-    const loginButton = Array.from(buttons).find(
-      (button) => button.name === "login"
-    );
+    const buttons = Array.from(element.shadowRoot.querySelectorAll("lightning-button"))
+      .reduce((map, button) => {
+        map[button.name] = button;
+        return map;
+      }, {});
+    const createAccountButton = buttons.createNewAccount;
+    const submitButton = buttons.submit;
+    const loginButton = buttons.login;
 
     expect(firstNameInput).not.toBeNull();
     expect(lastNameInput).not.toBeNull();
@@ -78,15 +75,15 @@ describe("c-self-register-with-account", () => {
     });
     document.body.appendChild(element);
 
-    const inputs = element.shadowRoot.querySelectorAll("lightning-input");
-    const lastNameInput = Array.from(inputs).find(
-      (input) => input.name === "LastName"
-    );
+    const inputs = Array.from(element.shadowRoot.querySelectorAll("lightning-input"))
+      .reduce((map, input) => {
+        map[input.name] = input;
+        return map;
+      }, {});
+    const lastNameInput = inputs["LastName"];
     lastNameInput.value = "Doe";
     lastNameInput.dispatchEvent(new CustomEvent("change"));
-    const emailInput = Array.from(inputs).find(
-      (input) => input.name === "Email"
-    );
+    const emailInput = inputs["Email"];
     emailInput.value = "john.doe@example.com";
     emailInput.dispatchEvent(new CustomEvent("change"));
 
