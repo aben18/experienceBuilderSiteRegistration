@@ -24,14 +24,14 @@ describe("c-self-register-with-account", () => {
     }
   });
 
-  const flushPromises = () =>
-    new Promise((resolve) => process.nextTick(resolve));
-
   const mapElementsByKey = (elements, key) =>
     Array.from(elements).reduce((map, element) => {
       map[element[key]] = element;
       return map;
     }, {});
+
+  const flushPromises = () =>
+    new Promise((resolve) => process.nextTick(resolve));
 
   it("renders all required form elements in initial state", () => {
     const element = createElement("c-self-register-with-account", {
