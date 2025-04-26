@@ -27,36 +27,36 @@ describe("c-self-register-with-account", () => {
   const flushPromises = () =>
     new Promise((resolve) => process.nextTick(resolve));
 
+  const mapElementsByKey = (elements, key) =>
+    Array.from(elements).reduce((map, element) => {
+      map[element[key]] = element;
+      return map;
+    }, {});
+
   it("renders all required form elements in initial state", () => {
     const element = createElement("c-self-register-with-account", {
       is: SelfRegisterWithAccount
     });
     document.body.appendChild(element);
 
-    const inputs = Array.from(
-      element.shadowRoot.querySelectorAll("lightning-input")
-    ).reduce((map, input) => {
-      map[input.name] = input;
-      return map;
-    }, {});
+    const inputs = mapElementsByKey(
+      element.shadowRoot.querySelectorAll("lightning-input"),
+      "name"
+    );
     const firstNameInput = inputs.FirstName;
     const lastNameInput = inputs.LastName;
     const emailInput = inputs.Email;
 
-    const recordPickers = Array.from(
-      element.shadowRoot.querySelectorAll("lightning-record-picker")
-    ).reduce((map, picker) => {
-      map[picker.objectApiName] = picker;
-      return map;
-    }, {});
+    const recordPickers = mapElementsByKey(
+      element.shadowRoot.querySelectorAll("lightning-record-picker"),
+      "objectApiName"
+    );
     const accountPicker = recordPickers.Account;
 
-    const buttons = Array.from(
-      element.shadowRoot.querySelectorAll("lightning-button")
-    ).reduce((map, button) => {
-      map[button.name] = button;
-      return map;
-    }, {});
+    const buttons = mapElementsByKey(
+      element.shadowRoot.querySelectorAll("lightning-button"),
+      "name"
+    );
     const createAccountButton = buttons.createNewAccount;
     const submitButton = buttons.submit;
     const loginButton = buttons.login;
