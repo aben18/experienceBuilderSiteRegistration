@@ -102,7 +102,7 @@ describe("c-self-register-with-account", () => {
       "name"
     );
     const createAccountButton = buttons.createNewAccount;
-    
+
     expect(createAccountButton.disabled).toBe(false);
   });
 
@@ -112,36 +112,35 @@ describe("c-self-register-with-account", () => {
     });
     document.body.appendChild(element);
 
-    const inputs = element.shadowRoot.querySelectorAll("lightning-input");
-    const lastNameInput = Array.from(inputs).find(
-      (input) => input.name === "LastName"
+    const inputs = mapElementsByKey(
+      element.shadowRoot.querySelectorAll("lightning-input"),
+      "name"
     );
+    const lastNameInput = inputs.LastName;
     lastNameInput.value = "Doe";
     lastNameInput.dispatchEvent(new CustomEvent("change"));
-    const emailInput = Array.from(inputs).find(
-      (input) => input.name === "Email"
-    );
+    const emailInput = inputs.Email;
     emailInput.value = "john.doe@example.com";
     emailInput.dispatchEvent(new CustomEvent("change"));
 
-    const recordPickers = element.shadowRoot.querySelectorAll(
-      "lightning-record-picker"
+    const recordPickers = mapElementsByKey(
+      element.shadowRoot.querySelectorAll("lightning-record-picker"),
+      "objectApiName"
     );
-    const accountPicker = Array.from(recordPickers).find(
-      (picker) => picker.objectApiName === "Account"
-    );
+    const accountPicker = recordPickers.Account;
     accountPicker.dispatchEvent(
       new CustomEvent("change", {
         detail: { recordId: "001XXXXXXXX" }
       })
     );
 
-    const buttons = element.shadowRoot.querySelectorAll("lightning-button");
-    const submitButton = Array.from(buttons).find(
-      (button) => button.name === "submit"
-    );
-
     await flushPromises();
+    const buttons = mapElementsByKey(
+      element.shadowRoot.querySelectorAll("lightning-button"),
+      "name"
+    );
+    const submitButton = buttons.submit;
+
     expect(submitButton.disabled).toBe(false);
   });
 
