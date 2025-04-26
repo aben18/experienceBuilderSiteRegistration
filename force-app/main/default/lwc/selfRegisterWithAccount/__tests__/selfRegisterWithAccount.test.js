@@ -96,13 +96,13 @@ describe("c-self-register-with-account", () => {
     const accountPicker = recordPickers.Account;
     accountPicker.dispatchEvent(new CustomEvent("focus"));
 
+    await flushPromises();
     const buttons = mapElementsByKey(
       element.shadowRoot.querySelectorAll("lightning-button"),
       "name"
     );
     const createAccountButton = buttons.createNewAccount;
-
-    await flushPromises();
+    
     expect(createAccountButton.disabled).toBe(false);
   });
 
