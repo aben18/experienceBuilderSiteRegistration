@@ -78,12 +78,10 @@ describe("c-self-register-with-account", () => {
     });
     document.body.appendChild(element);
 
-    const inputs = Array.from(
-      element.shadowRoot.querySelectorAll("lightning-input")
-    ).reduce((map, input) => {
-      map[input.name] = input;
-      return map;
-    }, {});
+    const inputs = mapElementsByKey(
+      element.shadowRoot.querySelectorAll("lightning-input"),
+      "name"
+    );
     const lastNameInput = inputs.LastName;
     const emailInput = inputs.Email;
     lastNameInput.value = "Doe";
@@ -91,19 +89,18 @@ describe("c-self-register-with-account", () => {
     lastNameInput.dispatchEvent(new CustomEvent("change"));
     emailInput.dispatchEvent(new CustomEvent("change"));
 
-    const recordPickers = Array.from(
-      element.shadowRoot.querySelectorAll("lightning-record-picker")
-    ).reduce((map, picker) => {
-      map[picker.objectApiName] = picker;
-      return map;
-    }, {});
+    const recordPickers = mapElementsByKey(
+      element.shadowRoot.querySelectorAll("lightning-record-picker"),
+      "objectApiName"
+    );
     const accountPicker = recordPickers.Account;
     accountPicker.dispatchEvent(new CustomEvent("focus"));
 
-    const buttons = element.shadowRoot.querySelectorAll("lightning-button");
-    const createAccountButton = Array.from(buttons).find(
-      (button) => button.name === "createNewAccount"
+    const buttons = mapElementsByKey(
+      element.shadowRoot.querySelectorAll("lightning-button"),
+      "name"
     );
+    const createAccountButton = buttons.createNewAccount;
 
     await flushPromises();
     expect(createAccountButton.disabled).toBe(false);
