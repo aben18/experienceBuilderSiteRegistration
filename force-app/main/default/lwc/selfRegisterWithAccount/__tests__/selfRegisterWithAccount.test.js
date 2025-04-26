@@ -191,10 +191,11 @@ describe("c-self-register-with-account", () => {
     delete window.location;
     window.location = { href: "" };
 
-    const buttons = element.shadowRoot.querySelectorAll("lightning-button");
-    const submitButton = Array.from(buttons).find(
-      (button) => button.name === "submit"
+    const buttons = mapElementsByKey(
+      element.shadowRoot.querySelectorAll("lightning-button"),
+      "name"
     );
+    const submitButton = buttons.submit;
     submitButton.dispatchEvent(new CustomEvent("click"));
 
     await flushPromises();
