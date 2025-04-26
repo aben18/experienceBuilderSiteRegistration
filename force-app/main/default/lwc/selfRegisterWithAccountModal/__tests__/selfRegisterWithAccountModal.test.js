@@ -35,4 +35,20 @@ describe("c-self-register-with-account-modal", () => {
     expect(cancelButton).not.toBeNull();
     expect(submitButton).not.toBeNull();
   });
+
+  it("returns value when submit button is clicked", () => {
+    const element = createElement("c-self-register-with-account-modal", {
+      is: SelfRegisterWithAccountModal
+    });
+    document.body.appendChild(element);
+
+    const buttons = mapElementsByKey(
+      element.shadowRoot.querySelectorAll("lightning-button"),
+      "name"
+    );
+    const submitButton = buttons.submit;
+    submitButton.dispatchEvent(new CustomEvent("click"));
+
+    expect(element.closeValue).not.toBeNull();
+  });
 });
