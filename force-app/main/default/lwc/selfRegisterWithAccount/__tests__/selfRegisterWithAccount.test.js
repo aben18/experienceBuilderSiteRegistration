@@ -157,10 +157,11 @@ describe("c-self-register-with-account", () => {
       input.reportValidity = jest.fn().mockReturnValue(true);
     });
 
-    const buttons = element.shadowRoot.querySelectorAll("lightning-button");
-    const submitButton = Array.from(buttons).find(
-      (button) => button.name === "submit"
+    const buttons = mapElementsByKey(
+      element.shadowRoot.querySelectorAll("lightning-button"),
+      "name"
     );
+    const submitButton = buttons.submit;
     submitButton.dispatchEvent(new CustomEvent("click"));
 
     await flushPromises();
