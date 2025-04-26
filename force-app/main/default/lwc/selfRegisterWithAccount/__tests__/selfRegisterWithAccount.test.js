@@ -24,7 +24,8 @@ describe("c-self-register-with-account", () => {
     }
   });
 
-  const flushPromises = () => new Promise((resolve) => process.nextTick(resolve));
+  const flushPromises = () =>
+    new Promise((resolve) => process.nextTick(resolve));
 
   it("renders all required form elements in initial state", () => {
     const element = createElement("c-self-register-with-account", {
@@ -32,28 +33,30 @@ describe("c-self-register-with-account", () => {
     });
     document.body.appendChild(element);
 
-    const inputs = Array.from(element.shadowRoot.querySelectorAll("lightning-input"))
-      .reduce((map, input) => {
-        map[input.name] = input;
-        return map;
-      }, {});
+    const inputs = Array.from(
+      element.shadowRoot.querySelectorAll("lightning-input")
+    ).reduce((map, input) => {
+      map[input.name] = input;
+      return map;
+    }, {});
     const firstNameInput = inputs.FirstName;
     const lastNameInput = inputs.LastName;
     const emailInput = inputs.Email;
 
-    const recordPickers = Array.from(element.shadowRoot.querySelectorAll(
-      "lightning-record-picker"
-    )).reduce((map, picker) => {
+    const recordPickers = Array.from(
+      element.shadowRoot.querySelectorAll("lightning-record-picker")
+    ).reduce((map, picker) => {
       map[picker.objectApiName] = picker;
       return map;
     }, {});
     const accountPicker = recordPickers.Account;
 
-    const buttons = Array.from(element.shadowRoot.querySelectorAll("lightning-button"))
-      .reduce((map, button) => {
-        map[button.name] = button;
-        return map;
-      }, {});
+    const buttons = Array.from(
+      element.shadowRoot.querySelectorAll("lightning-button")
+    ).reduce((map, button) => {
+      map[button.name] = button;
+      return map;
+    }, {});
     const createAccountButton = buttons.createNewAccount;
     const submitButton = buttons.submit;
     const loginButton = buttons.login;
@@ -75,24 +78,26 @@ describe("c-self-register-with-account", () => {
     });
     document.body.appendChild(element);
 
-    const inputs = Array.from(element.shadowRoot.querySelectorAll("lightning-input"))
-      .reduce((map, input) => {
-        map[input.name] = input;
-        return map;
-      }, {});
-    const lastNameInput = inputs["LastName"];
+    const inputs = Array.from(
+      element.shadowRoot.querySelectorAll("lightning-input")
+    ).reduce((map, input) => {
+      map[input.name] = input;
+      return map;
+    }, {});
+    const lastNameInput = inputs.LastName;
+    const emailInput = inputs.Email;
     lastNameInput.value = "Doe";
-    lastNameInput.dispatchEvent(new CustomEvent("change"));
-    const emailInput = inputs["Email"];
     emailInput.value = "john.doe@example.com";
+    lastNameInput.dispatchEvent(new CustomEvent("change"));
     emailInput.dispatchEvent(new CustomEvent("change"));
 
-    const recordPickers = element.shadowRoot.querySelectorAll(
-      "lightning-record-picker"
-    );
-    const accountPicker = Array.from(recordPickers).find(
-      (picker) => picker.objectApiName === "Account"
-    );
+    const recordPickers = Array.from(
+      element.shadowRoot.querySelectorAll("lightning-record-picker")
+    ).reduce((map, picker) => {
+      map[picker.objectApiName] = picker;
+      return map;
+    }, {});
+    const accountPicker = recordPickers.Account;
     accountPicker.dispatchEvent(new CustomEvent("focus"));
 
     const buttons = element.shadowRoot.querySelectorAll("lightning-button");
