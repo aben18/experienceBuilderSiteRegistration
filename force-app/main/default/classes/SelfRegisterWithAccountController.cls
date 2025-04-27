@@ -52,7 +52,7 @@ public with sharing class SelfRegisterWithAccountController {
   }
 
   public static Contact upsertContactByEmail(Contact newContact) {
-    Contact existingContact = [
+    List<Contact> contacts = [
       SELECT Id, AccountId
       FROM Contact
       WHERE Email = :newContact.Email
@@ -60,12 +60,14 @@ public with sharing class SelfRegisterWithAccountController {
       LIMIT 1
     ];
 
+    Contact existingContact = (!contacts.isEmpty()) ? contacts[0] : null;
+
     Contact upsertContact = new Contact(
       Id = (existingContact != null) ? existingContact.Id : null,
       FirstName = newContact.FirstName,
       LastName = newContact.LastName,
       Email = newContact.Email,
-      AccountId = (existingContact.AccountId != null)
+      AccountId = (existingContact != null)
         ? existingContact.AccountId
         : newContact.AccountId
     );
