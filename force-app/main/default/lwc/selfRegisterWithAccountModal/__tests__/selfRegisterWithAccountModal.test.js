@@ -40,7 +40,7 @@ describe("c-self-register-with-account-modal", () => {
     expect(submitButton).not.toBeNull();
   });
 
-  it("does not return value when cancel button is clicked", () => {
+  it("clicks cancel button without creating record", () => {
     const element = createElement("c-self-register-with-account-modal", {
       is: SelfRegisterWithAccountModal
     });
@@ -53,7 +53,8 @@ describe("c-self-register-with-account-modal", () => {
     const cancelButton = buttons.cancel;
     cancelButton.dispatchEvent(new CustomEvent("click"));
 
-    expect(element.closeValue).toBeUndefined();
+    expect(element.accountId).toBeUndefined();
+    expect(createRecord).not.toHaveBeenCalled();
   });
 
   it("sets value from lightning-input field as parameter to createRecord call", async () => {
