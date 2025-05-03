@@ -11,7 +11,7 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightningCommunity__Default">
-        <property
+            <property
         name="firstNameLabel"
         type="String"
         label="First Name Label"
@@ -19,7 +19,7 @@
         description="The label for the field where a user enters a first name."
         required="true"
       />
-      <property
+            <property
         name="lastNameLabel"
         type="String"
         label="Last Name Label"
