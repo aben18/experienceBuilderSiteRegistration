@@ -19,6 +19,14 @@
         description="The label for the field where a user enters a first name."
         required="true"
       />
+      <property
+        name="lastNameLabel"
+        type="String"
+        label="Last Name Label"
+        default="Last Name"
+        description="The label for the field where a user enters a last name."
+        required="true"
+      />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
