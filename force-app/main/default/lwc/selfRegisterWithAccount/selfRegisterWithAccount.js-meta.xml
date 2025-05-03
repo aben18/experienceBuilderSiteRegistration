@@ -3,8 +3,22 @@
     <apiVersion>63.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Self Registration with Account</masterLabel>
-    <description>A self registration component that allows the user to search for an existing account.</description>
+    <description
+  >A self registration component that allows the user to search for an existing account.</description>
     <targets>
         <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+        <property
+        name="firstNameLabel"
+        type="String"
+        label="First Name Label"
+        default="First Name"
+        description="The label for the field where a user enters a first name."
+        required="true"
+      />
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

@@ -1,10 +1,11 @@
-import { LightningElement, track } from "lwc";
+import { LightningElement, track, api } from "lwc";
 import getAccountByContactEmail from "@salesforce/apex/SelfRegisterWithAccountController.getAccountByContactEmail";
 import submitRegistration from "@salesforce/apex/SelfRegisterWithAccountController.submitRegistration";
 import SelfRegisterWithAccountModal from "c/selfRegisterWithAccountModal";
 
 export default class SelfRegisterWithAccount extends LightningElement {
-  // Track is required to make nested properties reactive
+  @api firstNameLabel = "First Name";
+
   @track contact = {
     FirstName: "",
     LastName: "",
