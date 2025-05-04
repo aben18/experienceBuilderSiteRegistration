@@ -12,6 +12,8 @@ export default class SelfRegisterWithAccount extends LightningElement {
   @api createAccountButtonLabel = "Create new.";
   @api createAccountModalHeaderLabel = "Create an Account";
   @api createAccountModalNameLabel = "Account Name";
+  @api createAccountModalCancelButtonLabel = "Cancel";
+  @api createAccountModalSubmitButtonLabel = "Save";
   @api submitButtonLabel = "Sign Up";
   @api cancelLinkLabel = "Already have a login?";
   @api registrationConfirmationUrl = "./CheckPasswordResetEmail";
@@ -86,7 +88,9 @@ export default class SelfRegisterWithAccount extends LightningElement {
       headerLabel: this.createAccountModalHeaderLabel,
       description: `Create a new ${this.accountLabel.toLowerCase()}`,
       size: "small",
-      accountNameLabel: this.createAccountModalNameLabel
+      accountNameLabel: this.createAccountModalNameLabel,
+      cancelButtonLabel: this.createAccountModalCancelButtonLabel,
+      submitButtonLabel: this.createAccountModalSubmitButtonLabel
     });
     if (result) {
       this.contact.AccountId = result;

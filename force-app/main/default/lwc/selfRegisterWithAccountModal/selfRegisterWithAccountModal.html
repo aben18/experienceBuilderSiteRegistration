@@ -14,14 +14,14 @@
   <lightning-modal-footer>
     <lightning-button
       variant="neutral"
-      label="Cancel"
+      label={cancelButtonLabel}
       name="cancel"
       onclick={handleCancel}
     ></lightning-button>
     <lightning-button
       class="slds-m-left_x-small"
       variant="brand"
-      label="Save"
+      label={submitButtonLabel}
       name="submit"
       onclick={handleSubmit}
     ></lightning-button>

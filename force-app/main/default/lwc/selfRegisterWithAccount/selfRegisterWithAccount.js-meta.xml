@@ -75,6 +75,22 @@
         required="true"
       />
       <property
+        name="createAccountModalCancelButtonLabel"
+        type="String"
+        label="Create Account Modal Cancel Button Label"
+        default="Cancel"
+        description="The label for the button that a user clicks to cancel account creation."
+        required="true"
+      />
+      <property
+        name="createAccountModalSubmitButtonLabel"
+        type="String"
+        label="Create Account Modal Submit Button Label"
+        default="Save"
+        description="The label for the button that a user clicks to create new account."
+        required="true"
+      />
+      <property
         name="submitButtonLabel"
         type="String"
         label="Submit Button Label"
