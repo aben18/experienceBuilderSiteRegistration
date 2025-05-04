@@ -10,6 +10,7 @@ export default class SelfRegisterWithAccount extends LightningElement {
   @api accountLabel = "Account";
   @api submitButtonLabel = "Sign Up";
   @api cancelLinkLabel = "Already have a login?";
+  @api registrationConfirmationUrl = "./CheckPasswordResetEmail";
 
   @track contact = {
     FirstName: "",
@@ -114,7 +115,7 @@ export default class SelfRegisterWithAccount extends LightningElement {
   }
 
   handleRegistrationConfirmationRedirect() {
-    const registrationConfirmationUrl = "/CheckPasswordResetEmail";
+    const registrationConfirmationUrl = this.registrationConfirmationUrl;
     window.location.href = registrationConfirmationUrl;
   }
 

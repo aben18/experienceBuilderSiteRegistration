@@ -58,6 +58,14 @@
         description="The label for the link that the user clicks to return to the login page."
         required="true"
       />
+      <property
+        name="registrationConfirmationUrl"
+        type="String"
+        label="Registration Confirmation URL"
+        default="./CheckPasswordResetEmail"
+        description="The page users see after successfully registering without a password."
+        required="true"
+      />
     </targetConfig>
   </targetConfigs>
 </LightningComponentBundle>
