@@ -43,11 +43,27 @@
         required="true"
       />
       <property
+        name="createAccountMessage"
+        type="String"
+        label="Create Account Message"
+        default="Can't find your account?"
+        description="The message displayed when a user can't find their account."
+        required="true"
+      />
+      <property
+        name="createAccountButtonLabel"
+        type="String"
+        label="Create Account Button Label"
+        default="Create new."
+        description="The label for the button that a user clicks to create a new account."
+        required="true"
+      />
+      <property
         name="submitButtonLabel"
         type="String"
         label="Submit Button Label"
         default="Sign Up"
-        description="The label for the button that a user clicks to request a new account."
+        description="The label for the button that a user clicks to request a new user account."
         required="true"
       />
       <property

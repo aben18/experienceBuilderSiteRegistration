@@ -31,10 +31,10 @@
         ></lightning-record-picker>
         <div class="slds-text-align_center">
           <p>
-            Can't find your account?&nbsp;
+            {createAccountMessage}&nbsp;
             <lightning-button
               variant="base"
-              label="Create new."
+              label={createAccountButtonLabel}
               name="createNewAccount"
               onclick={handleCreateNewAccount}
               disabled={isCreateNewAccountDisabled}

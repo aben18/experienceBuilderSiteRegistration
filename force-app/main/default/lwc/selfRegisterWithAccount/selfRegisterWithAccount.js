@@ -8,6 +8,8 @@ export default class SelfRegisterWithAccount extends LightningElement {
   @api lastNameLabel = "Last Name";
   @api emailLabel = "Email";
   @api accountLabel = "Account";
+  @api createAccountMessage = "Can't find your account?";
+  @api createAccountButtonLabel = "Create new.";
   @api submitButtonLabel = "Sign Up";
   @api cancelLinkLabel = "Already have a login?";
   @api registrationConfirmationUrl = "./CheckPasswordResetEmail";
