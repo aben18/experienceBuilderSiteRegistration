@@ -59,6 +59,14 @@
         required="true"
       />
       <property
+        name="createAccountHeaderLabel"
+        type="String"
+        label="Create Account Header Label"
+        default="Create an Account"
+        description="The label for the header that appears when a user clicks to create a new account."
+        required="true"
+      />
+      <property
         name="submitButtonLabel"
         type="String"
         label="Submit Button Label"
