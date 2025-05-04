@@ -1,47 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>63.0</apiVersion>
-    <isExposed>true</isExposed>
-    <masterLabel>Self Registration with Account</masterLabel>
-    <description>A self registration component that allows the user to search for an existing account.</description>
-    <targets>
-        <target>lightningCommunity__Page</target>
-        <target>lightningCommunity__Default</target>
-    </targets>
-    <targetConfigs>
-        <targetConfig targets="lightningCommunity__Default">
-            <property
-                name="firstNameLabel"
-                type="String"
-                label="First Name Label"
-                default="First Name"
-                description="The label for the field where a user enters a first name."
-                required="true"
-            />
-            <property
-                name="lastNameLabel"
-                type="String"
-                label="Last Name Label"
-                default="Last Name"
-                description="The label for the field where a user enters a last name."
-                required="true"
-            />
-            <property
-                name="emailLabel"
-                type="String"
-                label="Email Label"
-                default="Email"
-                description="The label for the field where a user enters a valid email address."
-                required="true"
-            />
-            <property
-                name="accountLabel"
-                type="String"
-                label="Account Label"
-                default="Account"
-                description="The label for the field where a user enters an account name."
-                required="true"
-            />
-        </targetConfig>
-    </targetConfigs>
+  <apiVersion>63.0</apiVersion>
+  <isExposed>true</isExposed>
+  <masterLabel>Self Registration with Account</masterLabel>
+  <description>A self registration component that allows the user to search for an existing account.</description>
+  <targets>
+    <target>lightningCommunity__Page</target>
+    <target>lightningCommunity__Default</target>
+  </targets>
+  <targetConfigs>
+    <targetConfig targets="lightningCommunity__Default">
+      <property
+        name="firstNameLabel"
+        type="String"
+        label="First Name Label"
+        default="First Name"
+        description="The label for the field where a user enters a first name."
+        required="true"
+      />
+      <property
+        name="lastNameLabel"
+        type="String"
+        label="Last Name Label"
+        default="Last Name"
+        description="The label for the field where a user enters a last name."
+        required="true"
+      />
+      <property
+        name="emailLabel"
+        type="String"
+        label="Email Label"
+        default="Email"
+        description="The label for the field where a user enters a valid email address."
+        required="true"
+      />
+      <property
+        name="accountLabel"
+        type="String"
+        label="Account Label"
+        default="Account"
+        description="The label for the field where a user enters an account name."
+        required="true"
+      />
+      <property
+        name="submitButtonLabel"
+        type="String"
+        label="Submit Button Label"
+        default="Sign Up"
+        description="The label for the button that a user clicks to request a new account."
+        required="true"
+      />
+    </targetConfig>
+  </targetConfigs>
 </LightningComponentBundle>
