@@ -6,6 +6,7 @@ import SelfRegisterWithAccountModal from "c/selfRegisterWithAccountModal";
 export default class SelfRegisterWithAccount extends LightningElement {
   @api firstNameLabel = "First Name";
   @api lastNameLabel = "Last Name";
+  @api emailLabel = "Email";
 
   @track contact = {
     FirstName: "",

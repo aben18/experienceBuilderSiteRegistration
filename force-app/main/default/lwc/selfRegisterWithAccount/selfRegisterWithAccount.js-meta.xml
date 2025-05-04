@@ -27,6 +27,14 @@
         description="The label for the field where a user enters a last name."
         required="true"
       />
+            <property
+        name="emailLabel"
+        type="String"
+        label="Email Label"
+        default="Email"
+        description="The label for the field where a user enters a valid email address."
+        required="true"
+      />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
