@@ -67,6 +67,14 @@
         required="true"
       />
       <property
+        name="createAccountModalNameLabel"
+        type="String"
+        label="Create Account Modal Name Label"
+        default="Account Name"
+        description="The label for the field where a user enters a new account name."
+        required="true"
+      />
+      <property
         name="submitButtonLabel"
         type="String"
         label="Submit Button Label"

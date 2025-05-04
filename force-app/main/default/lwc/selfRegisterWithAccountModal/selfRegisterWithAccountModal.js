@@ -6,6 +6,7 @@ import NAME_FIELD from "@salesforce/schema/Account.Name";
 
 export default class SelfRegisterWithAccountModal extends LightningModal {
   @api headerLabel;
+  @api accountNameLabel;
   accountId;
   accountName = "";
 
