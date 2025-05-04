@@ -4,19 +4,19 @@ import submitRegistration from "@salesforce/apex/SelfRegisterWithAccountControll
 import SelfRegisterWithAccountModal from "c/selfRegisterWithAccountModal";
 
 export default class SelfRegisterWithAccount extends LightningElement {
-  @api firstNameLabel = "First Name";
-  @api lastNameLabel = "Last Name";
-  @api emailLabel = "Email";
-  @api accountLabel = "Account";
-  @api createAccountMessage = "Can't find your account?";
-  @api createAccountButtonLabel = "Create new.";
-  @api createAccountModalHeaderLabel = "Create an Account";
-  @api createAccountModalNameLabel = "Account Name";
-  @api createAccountModalCancelButtonLabel = "Cancel";
-  @api createAccountModalSubmitButtonLabel = "Save";
-  @api submitButtonLabel = "Sign Up";
-  @api cancelLinkLabel = "Already have a login?";
-  @api registrationConfirmationUrl = "./CheckPasswordResetEmail";
+  @api firstNameLabel;
+  @api lastNameLabel;
+  @api emailLabel;
+  @api accountLabel;
+  @api createAccountMessage;
+  @api createAccountButtonLabel;
+  @api createAccountModalHeaderLabel;
+  @api createAccountModalNameLabel;
+  @api createAccountModalCancelButtonLabel;
+  @api createAccountModalSubmitButtonLabel;
+  @api submitButtonLabel;
+  @api cancelLinkLabel;
+  @api registrationConfirmationUrl;
 
   @track contact = {
     FirstName: "",
