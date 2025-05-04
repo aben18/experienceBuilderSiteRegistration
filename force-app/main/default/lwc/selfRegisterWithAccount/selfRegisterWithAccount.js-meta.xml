@@ -59,9 +59,9 @@
         required="true"
       />
       <property
-        name="createAccountHeaderLabel"
+        name="createAccountModalHeaderLabel"
         type="String"
-        label="Create Account Header Label"
+        label="Create Account Modal Header Label"
         default="Create an Account"
         description="The label for the header that appears when a user clicks to create a new account."
         required="true"
