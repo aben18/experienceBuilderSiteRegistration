@@ -118,8 +118,8 @@ export default class SelfRegisterWithAccount extends LightningElement {
     window.location.href = registrationConfirmationUrl;
   }
 
-  handleLoginRedirect() {
-    const loginUrl = "/login";
-    window.location.href = loginUrl;
+  handleCancelRedirect() {
+    const cancelUrl = "./login";
+    window.location.href = cancelUrl;
   }
 }
