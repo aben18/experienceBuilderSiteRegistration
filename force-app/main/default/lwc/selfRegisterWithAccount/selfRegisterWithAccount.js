@@ -9,6 +9,7 @@ export default class SelfRegisterWithAccount extends LightningElement {
   @api emailLabel = "Email";
   @api accountLabel = "Account";
   @api submitButtonLabel = "Sign Up";
+  @api cancelLinkLabel = "Already have a login?";
 
   @track contact = {
     FirstName: "",

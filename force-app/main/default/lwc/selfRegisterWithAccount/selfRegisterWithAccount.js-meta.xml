@@ -50,6 +50,14 @@
         description="The label for the button that a user clicks to request a new account."
         required="true"
       />
+      <property
+        name="cancelLinkLabel"
+        type="String"
+        label="Cancel Link Label"
+        default="Already have a login?"
+        description="The label for the link that the user clicks to return to the login page."
+        required="true"
+      />
     </targetConfig>
   </targetConfigs>
 </LightningComponentBundle>
