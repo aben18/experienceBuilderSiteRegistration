@@ -21,6 +21,10 @@ export default class SelfRegisterWithAccount extends LightningElement {
   @track accountSearchComplete = false;
   @track submitError = "";
 
+  get accountSearchPlaceholder() {
+    return `Search ${this.accountLabel}...`;
+  }
+
   handleChange(event) {
     const field = event.target.name;
     if (field) {
