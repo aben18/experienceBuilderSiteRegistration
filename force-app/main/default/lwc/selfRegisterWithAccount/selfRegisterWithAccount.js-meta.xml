@@ -34,6 +34,14 @@
                 description="The label for the field where a user enters a valid email address."
                 required="true"
             />
+            <property
+                name="accountLabel"
+                type="String"
+                label="Account Label"
+                default="Account"
+                description="The label for the field where a user enters an account name."
+                required="true"
+            />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
