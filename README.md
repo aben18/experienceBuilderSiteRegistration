@@ -1,4 +1,4 @@
-# Self Registration with Company Search
+# Self Registration with Company Search (THIS IS A WORK IN PROGRESS)
 
 **Warning:** It is critical that you understand your external sharing configurations before using this self-registration workflow. This workflow allows external users to create contacts on accounts. Ensure your external organization-wide defaults are private for critical objects (e.g., Cases, Opportunities) and that your sharing sets are configured to a profile (e.g., "External User Profile") other than the one you have configured in this component.
 
