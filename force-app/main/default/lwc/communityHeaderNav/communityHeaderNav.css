@@ -1,0 +1,28 @@
+.nav-container {
+  background-color: #2d004d; /* Deep purple bar */
+  padding: 0.5rem 1rem;
+}
+
+.nav-left .nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.125rem;
+}
+
+.nav-left .nav-link:hover,
+.nav-left .nav-link:focus {
+  text-decoration: underline;
+}
+
+.nav-left .nav-link_active {
+  background-color: #7b3dbb; /* Highlight Community */
+}
+
+.nav-right .icon {
+  width: 18px;
+  height: 18px;
+  filter: invert(100%);
+}
+
+
