@@ -35,6 +35,14 @@
         required="true"
       />
       <property
+        name="titleLabel"
+        type="String"
+        label="Title Label"
+        default="Job Title"
+        description="The label for the field where a user enters their job title."
+        required="true"
+      />
+      <property
         name="accountLabel"
         type="String"
         label="Account Label"
@@ -110,7 +118,7 @@
         name="registrationConfirmationUrl"
         type="String"
         label="Registration Confirmation URL"
-        default="./CheckPasswordResetEmail"
+        default="./login/CheckPasswordResetEmail"
         description="The page users see after successfully registering without a password."
         required="true"
       />

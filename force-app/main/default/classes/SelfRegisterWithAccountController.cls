@@ -1,8 +1,9 @@
 public with sharing class SelfRegisterWithAccountController {
+  
   @AuraEnabled(cacheable=true)
   public static Account getAccountByContactEmail(String email) {
     List<Contact> contacts = [
-      SELECT Id, Account.Name
+      SELECT Id, Account.Name, Account.Id
       FROM Contact
       WHERE Email = :email
       WITH SECURITY_ENFORCED
@@ -12,11 +13,14 @@ public with sharing class SelfRegisterWithAccountController {
     if (contacts.isEmpty()) {
       return null;
     }
-    return new Account(Id = contacts[0].Account.Id);
+    return new Account(Id = contacts[0].Account.Id, Name = contacts[0].Account.Name);
   }
 
   @AuraEnabled
   public static void submitRegistration(Contact contact) {
+    if (String.isBlank(contact.FirstName)) {
+      throw new AuraHandledException('First Name is required.');
+    }
     if (String.isBlank(contact.LastName)) {
       throw new AuraHandledException('Last Name is required.');
     }
@@ -27,28 +31,101 @@ public with sharing class SelfRegisterWithAccountController {
       throw new AuraHandledException('Account is required.');
     }
     User existingUser = getUserByUsername(contact.Email);
-    if (existingUser != null) {
+      if (existingUser != null) {
+        
+        // Get all profiles assigned as members to this experience site
+        List<Profile> siteProfiles = getExperienceSiteProfiles();
+        Set<Id> siteProfileIds = new Set<Id>();
+        for (Profile p : siteProfiles) {
+            siteProfileIds.add(p.Id);
+        }
+        
+        // Check if the user's profile is in the list of site profiles
+        if (siteProfileIds.contains(existingUser.ProfileId) && accountId == existingUser.AccountId) {
+            throw new AuraHandledException('A user with this email and organization already exists');
+        }
+         
+      }
+    
+
+    Contact upsertedContact = null;
+    try {
+      upsertedContact = upsertContactByEmail(contact);
+    } catch(Exception e) {
       throw new AuraHandledException(
-        'A user with this email address already exists.'
+        'Contact Upsert failed' + e
       );
     }
 
-    Contact upsertedContact = upsertContactByEmail(contact);
-    createUserFromContact(upsertedContact);
+    try {
+      createUserFromContact(upsertedContact);
+    } catch(Exception e) {
+      throw new AuraHandledException(
+        'Create New User From Contact Failed' + e
+      );
+    }
+    
   }
 
-  public static User getUserByUsername(String username) {
-    List<User> users = [
-      SELECT Id, Username
-      FROM User
-      WHERE Username = :username
-      WITH SECURITY_ENFORCED
-      LIMIT 1
+  @AuraEnabled(cacheable=true)
+public static List<Profile> getExperienceSiteProfiles() {
+    // First, get the current experience site's ID
+    String networkId = Network.getNetworkId();
+    
+    if (String.isBlank(networkId)) {
+        return new List<Profile>();
+    }
+    
+    // Query for all profiles assigned to this experience site
+    List<Profile> profiles = [
+        SELECT Id, Name
+        FROM Profile
+        WHERE Id IN (
+            SELECT ParentId 
+            FROM NetworkMemberGroup 
+            WHERE NetworkId = :networkId
+        )
+        WITH SECURITY_ENFORCED
+        ORDER BY Name
     ];
-    if (users.isEmpty()) {
+    
+    return profiles;
+}
+
+
+  @AuraEnabled(cacheable=true)
+public static Account getAccountById(Id accountId) {
+    if (accountId == null) {
       return null;
     }
-    return users[0];
+    List<Account> accts = [
+        SELECT Id, Name
+        FROM Account
+        WHERE Id = :accountId
+        WITH SECURITY_ENFORCED
+        LIMIT 1
+    ];
+    return accts.isEmpty() ? null : accts[0];
+}
+
+
+  public static User getUserByUsername(String username) {
+    List<User> users = null;
+    try{
+      users = [
+        SELECT Id, Username, Profile.Name
+        FROM User
+        WHERE Username = :username
+        WITH SECURITY_ENFORCED
+        LIMIT 1
+      ];
+      if (users.isEmpty()) {
+        return null;
+      } 
+    } catch (Exception e) {
+      throw new AuraHandledException('getUserByUsername Failed: ' + e);
+    }
+      return users[0];
   }
 
   public static Contact upsertContactByEmail(Contact newContact) {
@@ -99,30 +176,36 @@ public with sharing class SelfRegisterWithAccountController {
   public static User createUserFromContact(Contact contact) {
     Database.DMLOptions dlo = new Database.DMLOptions();
     dlo.EmailHeader.triggerUserEmail = true;
+    User newUser = null;
+    try {
+      newUser = new User(
+        FirstName = contact.FirstName,
+        LastName = contact.LastName,
+        Email = contact.Email,
+        Username = contact.Email,
+        Alias = createAlias(contact.FirstName, contact.LastName),
+        TimeZoneSidKey = 'America/New_York',
+        LocaleSidKey = 'en_US',
+        EmailEncodingKey = 'UTF-8',
+        LanguageLocaleKey = 'en_US',
+        ProfileId = [
+          SELECT Id
+          FROM Profile
+          WHERE Name = '#Ed-Fi: 365 User'
+          LIMIT 1
+        ]
+        .Id,
+        ContactId = contact.Id
+      );
+    } catch (Exception e) {
+      throw new AuraHandledException('createUserFromContact SOQL failed: ' + e);
+    }
 
-    User newUser = new User(
-      FirstName = contact.FirstName,
-      LastName = contact.LastName,
-      Email = contact.Email,
-      Username = contact.Email,
-      Alias = createAlias(contact.FirstName, contact.LastName),
-      TimeZoneSidKey = 'America/New_York',
-      LocaleSidKey = 'en_US',
-      EmailEncodingKey = 'UTF-8',
-      LanguageLocaleKey = 'en_US',
-      ProfileId = [
-        SELECT Id
-        FROM Profile
-        WHERE Name = 'Custom Customer Community User'
-        LIMIT 1
-      ]
-      .Id,
-      ContactId = contact.Id
-    );
     newUser.setOptions(dlo);
     if (!Schema.sObjectType.User.isCreateable()) {
       throw new System.NoAccessException();
     }
+
     insert newUser;
     return newUser;
   }
@@ -143,4 +226,30 @@ public with sharing class SelfRegisterWithAccountController {
       this.accountName = name;
     }
   }
+
+      // 1) Account search
+      @AuraEnabled(cacheable=true)
+      public static List<Account> searchAccounts(String searchTerm, Integer limitSize) {
+          // Clamp limit
+          Integer lim = (limitSize == null || limitSize <= 0) ? 20 : Math.min(limitSize, 200);
+      
+          // Normalize input and remove SOQL wildcards so user input can't act as a wildcard
+          String raw = (searchTerm == null) ? '' : searchTerm.trim();
+          String safe = raw.replace('%','').replace('_','');
+      
+          //Require at least 2 characters
+          if (safe.length() < 2) {
+              return new List<Account>();
+          }
+      
+          String sim = '%' + safe + '%';
+      
+          return [
+              SELECT Id, Name
+              FROM Account
+              WHERE Name LIKE :sim
+              ORDER BY Name
+              LIMIT :lim
+          ];
+      }
 }

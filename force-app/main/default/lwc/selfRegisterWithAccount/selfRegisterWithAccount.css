@@ -1,0 +1,97 @@
+
+.typeahead { position: relative; }
+
+.typeahead .typeahead-menu {
+  top: 100%; left: 0; width: 100%;
+  z-index: 7000; min-width: 24rem;
+}
+
+/* Make typeahead result rows smaller */
+.typeahead .slds-listbox__item .slds-button {
+  font-size: 0.75rem;        /* smaller text */
+  line-height: 1.25rem;      /* tighter line height */
+  padding: 0.125rem 0.5rem;  /* less vertical padding */
+  text-align: left;          /* left-align text */
+  justify-content: flex-start; /* align content to the left */
+  width: 100%;               /* make button take full width */
+}
+
+.typeahead .list-option-label {
+  font-size: 0.75rem;
+  text-align: left;
+}
+
+/* Ensure the container for options is properly aligned */
+.typeahead .slds-listbox {
+  text-align: left;
+}
+
+.slds-input {
+  border-radius: 96px;
+}
+
+.h2 {
+  align-content: center;
+}
+
+/*Sign up button formatting*/
+:host { --signup-blue: #0d2e83; }
+
+/* actions row: left button, right link on the same baseline */
+:host .formActions {
+  display: grid;
+  grid-template-columns: auto 1fr; /* button width, then flexible space */
+  align-items: center;             /* vertical centering */
+  column-gap: 1rem;
+  margin-top: var(--lwc-spacingSmall, .75rem);
+}
+:host .right { justify-self: end; }  /* push link to the far right */
+
+/*Sign up button formatting*/
+:host .slds-button.signupBtn {
+  padding: 0.55rem 1.15rem;
+  border: 2px solid #0d2e83;
+  color: #0d2e83;
+  background: transparent;
+  line-height: 1.25;
+  min-height: 2.75rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:host .signupBtn:hover,
+:host .signupBtn:focus {
+  background-color: rgba(13, 46, 131, 0.08);
+  border-color: #0d2e83;
+  color: #0d2e83;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(13, 46, 131, 0.25);
+}
+
+/* disabled look */
+:host .signupBtn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* style the lightning-button as a brand-colored text link */
+:host lightning-button.cancelLink {
+  --slds-c-button-text-color: var(--signup-blue);
+  --slds-c-button-text-color-hover: var(--signup-blue);
+  --slds-c-button-text-decoration: none;
+  --slds-c-button-text-decoration-hover: underline;
+
+  /* ensure it behaves like plain text */
+  --slds-c-button-color-background: transparent;
+  --slds-c-button-color-border: transparent;
+  --slds-c-button-radius-border: 0;
+  --slds-c-button-font-weight: 600; /* optional */
+}
+
+/* optional: stack on very small screens */
+@media (max-width: 480px) {
+  :host .formActions { grid-template-columns: 1fr; row-gap: .5rem; }
+  :host .right { justify-self: end; }
+}
