@@ -6,5 +6,5 @@
   },
   "salesforcedx-vscode-core.show-cli-success-msg": false,
   "codeBuilder.showWelcomePage": false,
-  "salesforce.einsteinForDevelopers.enable": true
+  "salesforce.einsteinForDevelopers.enable": false
 }
